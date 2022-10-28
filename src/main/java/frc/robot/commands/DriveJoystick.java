@@ -5,17 +5,17 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Drivetrain;
+import frc.robot.subsystems.DriveTrain;
 
 public class DriveJoystick extends CommandBase {
 
   /**
    * Drives the robot based on the joystick input
-   * @param drivetrain
+   * @param driveTrain
    */
-  public DriveJoystick(Drivetrain drivetrain) {
+  public DriveJoystick(DriveTrain driveTrain) {
 
-    addRequirements(drivetrain);
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
