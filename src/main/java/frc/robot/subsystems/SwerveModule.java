@@ -4,19 +4,23 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class SwerveModule extends SubsystemBase {
-
+  private final WPI_CANCoder turningEncoder;
+  //need encoder from talon for driveEncoder
+  private final WPI_TalonFX driveEcon
+  private final Falcon driveMotor;
+  private final Falcon turningMotor;
   
   /** Creates a new SwerveModule. */
-  public SwerveModule(int driveMotorAddress, int turningMotorAddress, int turningEncoderAddress, boolean ) {
+  public SwerveModule(int driveMotorAddress, int turningMotorAddress, int turningEncoderAddress, boolean turningEncoderReverse) {
 
-    Encoder driveEncoder = new Encoder(0, 1)
-
+  
     WPI_CANCoder turningEncoder = new WPI_CANCoder(deviceNumber)
   }
 

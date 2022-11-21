@@ -35,6 +35,15 @@ public final class Constants {
 
 
     }
+    public static final class RobotDimensions {
+
+        //left to right distance between the drivetrain wheels; should be measured from center to center
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785;
+        //front-back distance between the drivetrain wheels; should be measured from center to center
+        public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57785;
+
+    }
+
 
 
 }
