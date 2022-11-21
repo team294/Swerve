@@ -4,11 +4,22 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
+
+
 public class DriveTrain extends SubsystemBase {
-  /** Creates a new Drivetrain. */
-  public DriveTrain() {}
+  
+  private final SwerveModule m_frontLeft = new Translation2d(x, y);
+
+/** Creates a new Drivetrain. */
+  public DriveTrain() {
+
+
+
+  }
 
   @Override
   public void periodic() {

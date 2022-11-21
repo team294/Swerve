@@ -4,31 +4,26 @@
 
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.wpilibj2.command.ProfiledPIDSubsystem;
+import com.ctre.phoenix.sensors.WPI_CANCoder;
 
-public class SwerveModule extends ProfiledPIDSubsystem {
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+public class SwerveModule extends SubsystemBase {
+
+  
   /** Creates a new SwerveModule. */
-  public SwerveModule() {
-    super(
-        // The ProfiledPIDController used by the subsystem
-        new ProfiledPIDController(
-            0,
-            0,
-            0,
-            // The motion profile constraints
-            new TrapezoidProfile.Constraints(0, 0)));
+  public SwerveModule(int driveMotorAddress, int turningMotorAddress, int turningEncoderAddress, boolean ) {
+
+    Encoder driveEncoder = new Encoder(0, 1)
+
+    WPI_CANCoder turningEncoder = new WPI_CANCoder(deviceNumber)
   }
 
-  @Override
-  public void useOutput(double output, TrapezoidProfile.State setpoint) {
-    // Use the output (and optionally the setpoint) here
-  }
+
 
   @Override
-  public double getMeasurement() {
-    // Return the process variable measurement here
-    return 0;
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }
