@@ -49,6 +49,12 @@ public class DriveTrain extends SubsystemBase {
   private final WPI_TalonFX rightMotor1;
   private final WPI_TalonFX rightMotor2;
 
+  //variables for steer motors
+  private final WPI_TalonFX leftSteerMotor1;
+  private final WPI_TalonFX leftSteerMotor2;
+  private final WPI_TalonFX rightSteerMotor1;
+  private final WPI_TalonFX rightSteerMotor2;
+
   private final DifferentialDrive diffDrive;
   private final DifferentialDriveOdometry odometry;
 
@@ -156,6 +162,23 @@ public class DriveTrain extends SubsystemBase {
 
     leftMotor2.follow(leftMotor1);
     rightMotor2.follow(rightMotor1);
+
+    //tieing front&back steer motors 
+    leftSteerMotor1 = m_frontLeftModule.getDriveMotor();
+    leftSteerMotor2 = m_backLeftModule.getDriveMotor();
+    rightSteerMotor1 = m_frontRightModule.getDriveMotor();
+    rightSteerMotor2 = m_frontRightModule.getDriveMotor();
+    
+    leftSteerMotor1.configFactoryDefault();
+    leftSteerMotor2.configFactoryDefault();
+    rightSteerMotor1.configFactoryDefault();
+    rightSteerMotor2.configFactoryDefault();
+
+    leftSteerMotor2.set(ControlMode.Folflower, canLeftDriveMotor1);
+    rightSteerMotor2.set(ControlMode.Follower, canRightDriveMotor1);
+
+    leftSteerMotor2.follow(leftMotor1);
+    rightSteerMotor2.follow(rightMotor1);
 
     // Drive train is reversed on competition robot
     if (prototypeBot) {
