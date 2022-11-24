@@ -157,12 +157,28 @@ public class DriveTrain extends SubsystemBase {
     rightMotor1.configFactoryDefault();
     rightMotor2.configFactoryDefault();
 
-    leftMotor2.set(ControlMode.Folflower, canLeftDriveMotor1);
+    leftMotor2.set(ControlMode.Follower, canLeftDriveMotor1);
     rightMotor2.set(ControlMode.Follower, canRightDriveMotor1);
 
     leftMotor2.follow(leftMotor1);
     rightMotor2.follow(rightMotor1);
 
+    //tieing left&right steer motors, need to toggle inversion 
+    leftSteerMotor1 = m_frontLeftModule.getSteerMotor();
+    leftSteerMotor2 = m_backLeftModule.getSteerMotor();
+    rightSteerMotor1 = m_frontRightModule.getSteerMotor();
+    rightSteerMotor2 = m_frontRightModule.getSteerMotor();
+    
+    leftSteerMotor1.configFactoryDefault();
+    leftSteerMotor2.configFactoryDefault();
+    rightSteerMotor1.configFactoryDefault();
+    rightSteerMotor2.configFactoryDefault();
+
+    rightSteerMotor1.set(ControlMode.Follower, canLeftSteerMotor1);
+    rightSteerMotor2.set(ControlMode.Follower, canLeftSteerMotor2);
+
+    rightSteerMotor1.follow(leftSteerMotor1);
+    rightSteerMotor2.follow(leftSteerMotor2);
 
     // Drive train is reversed on competition robot
     if (prototypeBot) {
