@@ -795,7 +795,6 @@ public class DriveTrain extends SubsystemBase {
     if (rightMotor2.getTemperature() < temperatureCheck)
       tempCheck.notOverheatingMotor("DriveRight2");
   }
-}
 
 
   @Override
