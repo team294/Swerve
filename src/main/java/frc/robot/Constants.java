@@ -65,5 +65,12 @@ public final class Constants {
         public static final double compensationVoltage = 12.0;
       }
 
+      public static final class DriveConstants {
+        //TODO add 4 offset angle (0 for now, calibrate later)
+        public static final int offsetAngleFrontLeftMotor = 0;
+        public static final int offsetAngleFrontRightMotor = 0;
+        public static final int offsetAngleBackLeftMotor = 0;
+        public static final int offsetAngleBackRightMotor = 0;
+      }
 }
 

@@ -5,7 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.DriveTrainBeta;
 
 public class DriveJoystick extends CommandBase {
 
@@ -13,7 +13,7 @@ public class DriveJoystick extends CommandBase {
    * Drives the robot based on the joystick input
    * @param driveTrain
    */
-  public DriveJoystick(DriveTrain driveTrain) {
+  public DriveJoystick(DriveTrainBeta driveTrain) {
 
     addRequirements(driveTrain);
   }
