@@ -18,7 +18,7 @@ import static frc.robot.Constants.DriveConstants.*;
 import frc.robot.utilities.*;
 
 
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain extends SubsystemBase implements Loggable {
   /** Creates a new DriveTrain. */
   private final SwerveModule swerveFrontLeft;
   private final SwerveModule swerveFrontRight;
@@ -26,6 +26,7 @@ public class DriveTrain extends SubsystemBase {
   private final SwerveModule swerveBackRight;
   
   private FileLog log;
+  private boolean fastLogging = false; // true is enabled to run every cycle; false follows normal logging cycles
 
   // variables for gyro and gyro calibration
   private final AHRS ahrs;
@@ -112,7 +113,7 @@ public class DriveTrain extends SubsystemBase {
 	public double getGyroRotation() {
 		double angle = getGyroRaw() - yawZero;
 		// Angle will be in terms of raw gyro units (-inf,inf), so you need to convert to (-180, 180]
-		angle = normalizeAngle(angle);
+		angle = MathBCR.normalizeAngle(angle);
 		return angle;
   }
 
@@ -136,16 +137,6 @@ public class DriveTrain extends SubsystemBase {
   //   return ((getRightEncoderVelocity() - getLeftEncoderVelocity()) / 2) * wheelInchesToGyroDegrees;
   // }
 
-  /**
-	 * Converts input angle to a number between -179.999 and +180.0.
-	 * @return normalized angle
-	 */
-	public double normalizeAngle(double angle) {
-		angle = angle % 360;
-		angle = (angle <= -180) ? (angle + 360) : angle;
-    angle = (angle > 180) ? (angle - 360) : angle;
-		return angle;
-  }
 
   // ************ Swerve drive methods
 
@@ -166,6 +157,16 @@ public class DriveTrain extends SubsystemBase {
 
 
   // ************ Information methods
+
+
+  /**
+   * Turns file logging on every scheduler cycle (~20ms) or every 10 cycles (~0.2 sec)
+   * @param enabled true = every cycle, false = every 10 cycles
+   */ 
+  @Override
+  public void enableFastLogging(boolean enabled) {
+    fastLogging = enabled;
+  }
 
   /**
    * Checks if the CAN bus and gyro are working.  Sometimes, when the robot boots up, either the CAN bus or
@@ -195,7 +196,7 @@ public class DriveTrain extends SubsystemBase {
     // double rightMeters = Units.inchesToMeters(getRightEncoderInches());
     // odometry.update(Rotation2d.fromDegrees(degrees), leftMeters, rightMeters);
     
-    if(log.getLogRotation() == log.DRIVE_CYCLE) {
+    if(fastLogging || log.getLogRotation() == log.DRIVE_CYCLE) {
       updateDriveLog(false);
 
       if(!isGyroReading()) {
