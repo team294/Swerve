@@ -33,8 +33,15 @@ public final class Constants {
         public static final int CANTurnEncoderBackLeft = 11;
         public static final int CANTurnEncoderBackRight = 12;
 
-
     }
+
+    public static final class OIConstants {
+        public static final int usbXboxController = 0;
+        public static final int usbLeftJoystick = 1;
+        public static final int usbRightJoystick = 2;
+        public static final int usbCoPanel = 3;
+    }
+
     public static final class RobotDimensions {
 
         //left to right distance between the drivetrain wheels; should be measured from center to center
@@ -67,10 +74,12 @@ public final class Constants {
 
       public static final class DriveConstants {
         //TODO add 4 offset angle (0 for now, calibrate later)
-        public static final int offsetAngleFrontLeftMotor = 0;
-        public static final int offsetAngleFrontRightMotor = 0;
-        public static final int offsetAngleBackLeftMotor = 0;
-        public static final int offsetAngleBackRightMotor = 0;
+        // Update the offset angles in RobotPreferences (in Shuffleboard), not in this code!
+        // After updating in RobotPreferences, you will need to re-start the robot code for the changes to take effect.
+        public static double offsetAngleFrontLeftMotor = 0;
+        public static double offsetAngleFrontRightMotor = 0;
+        public static double offsetAngleBackLeftMotor = 0;
+        public static double offsetAngleBackRightMotor = 0;
       }
 }
 
