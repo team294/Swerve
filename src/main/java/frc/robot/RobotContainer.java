@@ -272,12 +272,9 @@ public class RobotContainer {
    */
   public void disabledPeriodic() {
     // Check for CAN bus error.  This is to prevent the issue that caused us to be eliminated in 2020!
-    boolean error = true;
-    if ((driveTrain.getLeftBusVoltage() > 8.0) && (driveTrain.isGyroReading() == true) && (driveTrain.getRightTemp() > 5.0)) error = false;    // The CAN bus and Gyro are working
-  
-    if (error) {
+    if (driveTrain.canBusError()) {
       RobotPreferences.recordStickyFaults("CAN Bus", log);
-    }  //    TODO May want to flash this
+    }  //    TODO May want to flash this to the driver with some obvious signal!
   }
   
   /**

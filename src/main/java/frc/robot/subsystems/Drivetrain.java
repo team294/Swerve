@@ -20,10 +20,10 @@ import frc.robot.utilities.*;
 
 public class DriveTrain extends SubsystemBase {
   /** Creates a new DriveTrain. */
-  private final SwerveModule m_frontLeftModule;
-  private final SwerveModule m_frontRightModule;
-  private final SwerveModule m_backLeftModule;
-  private final SwerveModule m_backRightModule;
+  private final SwerveModule swerveFrontLeft;
+  private final SwerveModule swerveFrontRight;
+  private final SwerveModule swerveBackLeft;
+  private final SwerveModule swerveBackRight;
   
   private FileLog log;
 
@@ -61,9 +61,11 @@ public class DriveTrain extends SubsystemBase {
     currTime = System.currentTimeMillis();
     lfRunningAvg.reset();
 
-    //TODO create for swerve modules
-    m_frontLeftModule = new SwerveModule (CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, false, false, offsetAngleFrontLeftMotor);
-    
+    // create for swerve modules
+    swerveFrontLeft = new SwerveModule(CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, false, false, offsetAngleFrontLeftMotor);
+    swerveFrontRight = new SwerveModule(CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, false, false, offsetAngleFrontRightMotor);
+    swerveBackLeft = new SwerveModule(CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, false, false, offsetAngleBackLeftMotor);
+    swerveBackRight = new SwerveModule(CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, false, false, offsetAngleBackRightMotor);
 
     //TODO create and initialize odometery
   }
@@ -147,10 +149,33 @@ public class DriveTrain extends SubsystemBase {
 
   // ************ Swerve drive methods
 
+  /**
+   * @param setCoast true = coast mode, false = brake mode
+   */
+  public void setDriveModeCoast(boolean setCoast) {
+    swerveFrontLeft.setMotorModeCoast(setCoast);
+    swerveFrontRight.setMotorModeCoast(setCoast);
+    swerveBackLeft.setMotorModeCoast(setCoast);
+    swerveBackRight.setMotorModeCoast(setCoast);
+  }
+
 
 
   // ************ Odometry methods
 
+
+
+  // ************ Information methods
+
+  /**
+   * Checks if the CAN bus and gyro are working.  Sometimes, when the robot boots up, either the CAN bus or
+   * the gyro don't initialize properly.  ROBOT CODE WILL NOT BE ABLE TO CONTROL MOTORS when this happens, so
+   * always check this before starting a match!
+   * @return true = something is not working.  false = CAN bus and gyro are both working.
+   */
+  public boolean canBusError() {
+    return ((swerveFrontLeft.getDriveBusVoltage() < 7.0) || (swerveFrontLeft.getDriveTemp() < 5.0) || !isGyroReading());
+  }
 
 
   @Override
