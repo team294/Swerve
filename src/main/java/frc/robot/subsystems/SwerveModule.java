@@ -54,36 +54,35 @@ public class SwerveModule {
       boolean driveEncoderReversed, boolean turningEncoderReversed,
       double turningOffsetDegrees) {
 
+    // Create motor and encoder objects
     driveMotor = new WPI_TalonFX(driveMotorAddress);
     turningMotor = new WPI_TalonFX(turningMotorAddress);
-
     turningEncoder = new WPI_CANCoder(turningEncoderAddress);
 
+    // configure drive motor
     driveMotor.configFactoryDefault();
-    turningMotor.configFactoryDefault();
-    turningEncoder.configFactoryDefault();
-
     driveMotor.setInverted(false);
-    turningMotor.setInverted(false);
-
-    driveMotor.setNeutralMode(NeutralMode.Brake);
-    turningMotor.setNeutralMode(NeutralMode.Brake);
-
     driveMotor.configNeutralDeadband(0.0);
-    turningMotor.configNeutralDeadband(0.0);
-
     driveMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
-    turningMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
-
     driveMotor.enableVoltageCompensation(true);
+
+    // configure turning motor
+    turningMotor.configFactoryDefault();
+    turningMotor.setInverted(false);
+    turningMotor.configNeutralDeadband(0.0);
+    turningMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
     turningMotor.enableVoltageCompensation(true);
 
-    driveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
-    
-    // Set whether the encoder should be reversed or not
-    driveMotor.setSensorPhase(driveEncoderReversed);
-    turningEncoder.configSensorDirection(turningEncoderReversed);
+    // other configs for drive and turning motors
+    setMotorModeCoast(true);        // true on boot up, so robot is easy to push.  Change to false in autoinit or teleopinit
 
+    // configure drive encoder
+    driveMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 0);
+    driveMotor.setSensorPhase(driveEncoderReversed);
+
+    // configure turning encoder
+    turningEncoder.configFactoryDefault();
+    turningEncoder.configSensorDirection(turningEncoderReversed);
     turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
     turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     calibrateTurningEncoderDegrees(turningOffsetDegrees);
@@ -93,6 +92,21 @@ public class SwerveModule {
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
     turningPIDController.enableContinuousInput(-Math.PI, Math.PI);
+  }
+
+  // ********** Swerve module configuration methods
+
+  /**
+   * @param setCoast true = coast mode, false = brake mode
+   */
+  public void setMotorModeCoast(boolean setCoast) {
+    if (setCoast) {
+      driveMotor.setNeutralMode(NeutralMode.Coast);
+      turningMotor.setNeutralMode(NeutralMode.Coast);
+    } else {
+      driveMotor.setNeutralMode(NeutralMode.Brake);
+      turningMotor.setNeutralMode(NeutralMode.Brake);
+    }
   }
 
   // ********** Main swerve module control methods
@@ -118,7 +132,16 @@ public class SwerveModule {
   // }
 
   /**
+   * Turns off the drive and turning motors.
+   */
+  public void stopMotors() {
+    driveMotor.set(0);
+    turningMotor.set(0);
+  }
+
+  /**
    * Sets the desired state for the module.
+   * Note from Don -- I believe this method needs to be called repeatedly to function.
    *
    * @param desiredState Desired state with speed and angle.
    */
@@ -132,6 +155,7 @@ public class SwerveModule {
         drivePIDController.calculate(getDriveEncoderVelocity(), state.speedMetersPerSecond);
 
     //TODO is this right?  Do we need to call reset()?  -Don
+    //TODO Is it better to use the PID controller on the Falcon to just set the wheel to an orientation?
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
         turningPIDController.calculate(getTurningEncoderDegrees() * Math.PI/180.0, state.angle.getRadians());

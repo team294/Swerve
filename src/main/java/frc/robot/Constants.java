@@ -3,8 +3,9 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
-
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -33,10 +34,17 @@ public final class Constants {
         public static final int CANTurnEncoderBackLeft = 11;
         public static final int CANTurnEncoderBackRight = 12;
 
-
     }
-    public static final class RobotDimensions {
 
+    public static final class OIConstants {
+        public static final int usbXboxController = 0;
+        public static final int usbLeftJoystick = 1;
+        public static final int usbRightJoystick = 2;
+        public static final int usbCoPanel = 3;
+    }
+
+    public static final class RobotDimensions {
+        // TODO Update values
         //left to right distance between the drivetrain wheels; should be measured from center to center
         public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785;
         //front-back distance between the drivetrain wheels; should be measured from center to center
@@ -45,25 +53,50 @@ public final class Constants {
     }
 
     public static final class ModuleConstants {
+        //TODO calibrate this value
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
     
+        //TODO calibrate this value
         public static final int kEncoderCPR = 1024;                 // Encoder counts per revolution
         public static final double kWheelDiameterMeters = 0.15;
         public static final double kDriveEncoderMetersPerTick =
             // Assumes the encoders are directly mounted on the wheel shafts
             (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-    
-        public static final double kTurningEncoderDistancePerPulse =
-            // Assumes the encoders are on a 1:1 reduction with the module shaft.
-            (2 * Math.PI) / (double) kEncoderCPR;
-    
+        
+        //TODO calibrate this value
         public static final double kPModuleTurningController = 1;
     
+        //TODO calibrate this value
         public static final double kPModuleDriveController = 1;
 
         public static final double compensationVoltage = 12.0;
       }
 
+      public static final class DriveConstants {
+        // The locations of the wheels relative to the physical center of the robot, in meters.
+        // X: + = forward.  Y: + = to the left
+        // The order in which you pass in the wheel locations is the same order that
+        // you will receive the module states when performing inverse kinematics. It is also expected that
+        // you pass in the module states in the same order when calling the forward kinematics methods.
+        // 0 = FrontLeft, 1 = FrontRight, 2 = BackLeft, 3 = BackRight
+        public static final SwerveDriveKinematics kDriveKinematics =
+            new SwerveDriveKinematics(
+                new Translation2d(RobotDimensions.DRIVETRAIN_WHEELBASE_METERS / 2, RobotDimensions.DRIVETRAIN_TRACKWIDTH_METERS / 2),
+                new Translation2d(RobotDimensions.DRIVETRAIN_WHEELBASE_METERS / 2, -RobotDimensions.DRIVETRAIN_TRACKWIDTH_METERS / 2),
+                new Translation2d(-RobotDimensions.DRIVETRAIN_WHEELBASE_METERS / 2, RobotDimensions.DRIVETRAIN_TRACKWIDTH_METERS / 2),
+                new Translation2d(-RobotDimensions.DRIVETRAIN_WHEELBASE_METERS / 2, -RobotDimensions.DRIVETRAIN_TRACKWIDTH_METERS / 2));
+
+        //TODO add 4 offset angle (0 for now, calibrate later)
+        // Update the offset angles in RobotPreferences (in Shuffleboard), not in this code!
+        // After updating in RobotPreferences, you will need to re-start the robot code for the changes to take effect.
+        public static double offsetAngleFrontLeftMotor = 0;
+        public static double offsetAngleFrontRightMotor = 0;
+        public static double offsetAngleBackLeftMotor = 0;
+        public static double offsetAngleBackRightMotor = 0;
+
+        //TODO calibrate this value
+        public static final double kMaxSpeedMetersPerSecond = 3;
+      }
 }
 
