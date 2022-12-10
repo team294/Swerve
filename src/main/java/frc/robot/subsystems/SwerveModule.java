@@ -132,7 +132,16 @@ public class SwerveModule {
   // }
 
   /**
+   * Turns off the drive and turning motors.
+   */
+  public void stopMotors() {
+    driveMotor.set(0);
+    turningMotor.set(0);
+  }
+
+  /**
    * Sets the desired state for the module.
+   * Note from Don -- I believe this method needs to be called repeatedly to function.
    *
    * @param desiredState Desired state with speed and angle.
    */
@@ -146,6 +155,7 @@ public class SwerveModule {
         drivePIDController.calculate(getDriveEncoderVelocity(), state.speedMetersPerSecond);
 
     //TODO is this right?  Do we need to call reset()?  -Don
+    //TODO Is it better to use the PID controller on the Falcon to just set the wheel to an orientation?
     // Calculate the turning motor output from the turning PID controller.
     final double turnOutput =
         turningPIDController.calculate(getTurningEncoderDegrees() * Math.PI/180.0, state.angle.getRadians());

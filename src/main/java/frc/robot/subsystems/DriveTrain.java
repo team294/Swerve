@@ -7,6 +7,13 @@ package frc.robot.subsystems;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.filter.LinearFilter;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,15 +26,25 @@ import frc.robot.utilities.*;
 
 
 public class DriveTrain extends SubsystemBase implements Loggable {
-  /** Creates a new DriveTrain. */
-  private final SwerveModule swerveFrontLeft;
-  private final SwerveModule swerveFrontRight;
-  private final SwerveModule swerveBackLeft;
-  private final SwerveModule swerveBackRight;
-  
+
+  // File logging variables
   private FileLog log;
   private boolean fastLogging = false; // true is enabled to run every cycle; false follows normal logging cycles
 
+  // create swerve modules
+  private final SwerveModule swerveFrontLeft = new SwerveModule(
+      CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, 
+      false, false, offsetAngleFrontLeftMotor);
+  private final SwerveModule swerveFrontRight = new SwerveModule(
+      CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, 
+      false, false, offsetAngleFrontRightMotor);
+  private final SwerveModule swerveBackLeft = new SwerveModule(
+      CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, 
+      false, false, offsetAngleBackLeftMotor);
+  private final SwerveModule swerveBackRight = new SwerveModule(
+      CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, 
+      false, false, offsetAngleBackRightMotor);
+  
   // variables for gyro and gyro calibration
   private final AHRS ahrs;
   private double yawZero = 0;
@@ -40,7 +57,13 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   private double angularVelocity;  // Robot angular velocity in degrees per second
   private LinearFilter lfRunningAvg = LinearFilter.movingAverage(4); //calculate running average to smooth quantization error in angular velocity calc
 
+  // Odometry class for tracking robot pose
+  SwerveDriveOdometry odometry;
 
+  /**
+   * Constructs the DriveTrain subsystem
+   * @param log FileLog object for logging
+   */
   public DriveTrain(FileLog log) {
     this.log = log; // save reference to the fileLog
 
@@ -62,13 +85,12 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     currTime = System.currentTimeMillis();
     lfRunningAvg.reset();
 
-    // create for swerve modules
-    swerveFrontLeft = new SwerveModule(CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, false, false, offsetAngleFrontLeftMotor);
-    swerveFrontRight = new SwerveModule(CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, false, false, offsetAngleFrontRightMotor);
-    swerveBackLeft = new SwerveModule(CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, false, false, offsetAngleBackLeftMotor);
-    swerveBackRight = new SwerveModule(CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, false, false, offsetAngleBackRightMotor);
+    //TODO config swerve modules
 
-    //TODO create and initialize odometery
+
+    // create and initialize odometery
+    odometry = new SwerveDriveOdometry(kDriveKinematics, Rotation2d.fromDegrees(getGyroRotation()), 
+        new Pose2d(0, 0, Rotation2d.fromDegrees(0)) );
   }
   
 
@@ -108,7 +130,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   }
 
   /**
-	 * @return gyro angle from 180 to -180, in degrees (postitive is left, negative is right)
+	 * @return double, gyro angle from 180 to -180, in degrees (postitive is left, negative is right)
 	 */
 	public double getGyroRotation() {
 		double angle = getGyroRaw() - yawZero;
@@ -150,11 +172,98 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackRight.setMotorModeCoast(setCoast);
   }
 
+  /**
+   * Stops all of the drive and turning motors
+   */
+  public void stopMotors() {
+    swerveFrontLeft.stopMotors();
+    swerveFrontRight.stopMotors();
+    swerveBackLeft.stopMotors();
+    swerveBackRight.stopMotors();
+  }
 
+  /**
+   * Sets the swerve ModuleStates.
+   * Note from Don -- I believe this method needs to be called repeatedly to function.
+   *
+   * @param desiredStates The desired SwerveModule states.          
+   * 0 = FrontLeft, 1 = FrontRight, 2 = BackLeft, 3 = BackRight
+   */
+  public void setModuleStates(SwerveModuleState[] desiredStates) {
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        desiredStates, kMaxSpeedMetersPerSecond);
+    swerveFrontLeft.setDesiredState(desiredStates[0]);
+    swerveFrontRight.setDesiredState(desiredStates[1]);
+    swerveBackLeft.setDesiredState(desiredStates[2]);
+    swerveBackRight.setDesiredState(desiredStates[3]);
+  }
+
+  /**
+   * Method to drive the robot using desired robot velocity and orientation, such as from joystick info.
+   * Note from Don -- I believe this method needs to be called repeatedly to function.
+   *
+   * @param xSpeed Speed of the robot in the x direction, in meters per second (+ = forward)
+   * @param ySpeed Speed of the robot in the y direction, in meters per second (- = sideways)
+   * @param rot Angular rate of the robot, in radians per second (+ = turn to the left)
+   * @param fieldRelative True = the provided x and y speeds are relative to the field.
+   * False = the provided x and y speeds are relative to the current facing of the robot. 
+   */
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+    drive(xSpeed, ySpeed, rot, new Translation2d(), fieldRelative);
+  }
+
+  /**
+   * Method to drive the robot using desired robot velocity and orientation, such as from joystick info.
+   * Note from Don -- I believe this method needs to be called repeatedly to function.
+   *
+   * @param xSpeed Speed of the robot in the x direction, in meters per second (+ = forward)
+   * @param ySpeed Speed of the robot in the y direction, in meters per second (- = sideways)
+   * @param rot Angular rate of the robot, in radians per second (+ = turn to the left)
+   * @param centerOfRotationMeters The center of rotation. For example, if you set the center of
+   *     rotation at one corner of the robot and XSpeed, YSpeed = 0, then the robot will rotate around that corner.
+   *     This feature may not work if fieldRelative = True (need to test).
+   * @param fieldRelative True = the provided x and y speeds are relative to the field.
+   * False = the provided x and y speeds are relative to the current facing of the robot. 
+   */
+   public void drive(double xSpeed, double ySpeed, double rot, Translation2d centerOfRotationMeters, boolean fieldRelative) {
+    SwerveModuleState[] swerveModuleStates =
+        kDriveKinematics.toSwerveModuleStates(
+            fieldRelative
+                ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(getGyroRotation()))
+                : new ChassisSpeeds(xSpeed, ySpeed, rot),
+            centerOfRotationMeters);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, kMaxSpeedMetersPerSecond);
+    swerveFrontLeft.setDesiredState(swerveModuleStates[0]);
+    swerveFrontRight.setDesiredState(swerveModuleStates[1]);
+    swerveBackLeft.setDesiredState(swerveModuleStates[2]);
+    swerveBackRight.setDesiredState(swerveModuleStates[3]);
+  }
 
   // ************ Odometry methods
 
+  /**
+   * Returns the currently-estimated position of the robot on the field
+   *
+   * @return The robot's pose
+   */
+  public Pose2d getPose() {
+    return odometry.getPoseMeters();
+  }
 
+  /**
+   * Resets the odometry to the specified pose.  I.e. defines the robot's
+   * position and orientation on the field.
+   *
+   * @param pose The pose to which to set the odometry.  Pose components include
+   *    <p> Robot X location in the field, in meters (0 = middle of robot wherever the robot starts auto mode, +=away from our drivestation)
+   *    <p> Robot Y location in the field, in meters (0 = middle of robot wherever the robot starts auto mode, +=left when looking from our drivestation)
+   *    <p> Robot angle on the field (0 = facing away from our drivestation, + to the left, - to the right)
+   */
+  public void resetPose(Pose2d pose) {
+    odometry.resetPosition( pose,
+        Rotation2d.fromDegrees(getGyroRotation()) );
+  }
 
   // ************ Information methods
 
@@ -192,10 +301,11 @@ public class DriveTrain extends SubsystemBase implements Loggable {
 
     // Update robot odometry
     double degrees = getGyroRotation();
-    // double leftMeters = Units.inchesToMeters(getLeftEncoderInches());
-    // double rightMeters = Units.inchesToMeters(getRightEncoderInches());
-    // odometry.update(Rotation2d.fromDegrees(degrees), leftMeters, rightMeters);
-    
+    odometry.update(Rotation2d.fromDegrees(degrees), new SwerveModuleState[] {
+          swerveFrontLeft.getState(), swerveFrontRight.getState(),
+          swerveBackLeft.getState(), swerveBackRight.getState()
+        });
+        
     if(fastLogging || log.getLogRotation() == log.DRIVE_CYCLE) {
       updateDriveLog(false);
 
