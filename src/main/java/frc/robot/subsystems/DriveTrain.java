@@ -314,6 +314,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
       }
 
       // Update data on SmartDashboard
+      // TODO Add more logging to Shuffleboard!
       // SmartDashboard.putNumber("Drive Average Dist in Meters", Units.inchesToMeters(getAverageDistance()));
       // SmartDashboard.putNumber("Drive Fwd Velocity", getLeftEncoderVelocity());
       // SmartDashboard.putNumber("Drive Sideways Velocity", getRightEncoderVelocity());
@@ -324,13 +325,14 @@ public class DriveTrain extends SubsystemBase implements Loggable {
       SmartDashboard.putNumber("Drive Pitch", ahrs.getRoll());
       
       // position from odometry (helpful for autos)
-      // var translation = odometry.getPoseMeters().getTranslation();
-      // SmartDashboard.putNumber("Drive Odometry X",translation.getX());
-      // SmartDashboard.putNumber("Drive Odometry Y",translation.getY());
+      Pose2d pose = odometry.getPoseMeters();
+      SmartDashboard.putNumber("Drive Odometry X", pose.getTranslation().getX());
+      SmartDashboard.putNumber("Drive Odometry Y", pose.getTranslation().getY());
+      SmartDashboard.putNumber("Drive Odometry Theta", pose.getRotation().getDegrees());
 
       //Values for bugfixing
-      // SmartDashboard.putNumber("Drive Bus Volt", leftMotor1.getBusVoltage());
-      // SmartDashboard.putNumber("Drive Motor Temp", leftMotor1.getTemperature());
+      SmartDashboard.putNumber("Drive Bus Volt", swerveFrontLeft.getDriveBusVoltage());
+      SmartDashboard.putNumber("Drive Motor Temp", swerveFrontLeft.getDriveTemp());
     }
 
     // save current angVel values as previous values for next calculation
@@ -343,7 +345,9 @@ public class DriveTrain extends SubsystemBase implements Loggable {
    * @param logWhenDisabled true will log when disabled, false will discard the string
    */
   public void updateDriveLog(boolean logWhenDisabled) {
-    // var translation = odometry.getPoseMeters().getTranslation();
+    // TODO Add more logging to Shuffleboard!
+
+    Pose2d pose = odometry.getPoseMeters();
     log.writeLog(logWhenDisabled, "Drive", "Update Variables", 
       // "L1 Volts", leftMotor1.getMotorOutputVoltage(), "L2 Volts", leftMotor2.getMotorOutputVoltage(),
       // "L1 Amps", leftMotor1.getSupplyCurrent(), "L2 Amps", leftMotor2.getSupplyCurrent(),
@@ -354,8 +358,9 @@ public class DriveTrain extends SubsystemBase implements Loggable {
       // "Left Inches", getLeftEncoderInches(), "L Vel", getLeftEncoderVelocity(),
       // "Right Inches", getRightEncoderInches(), "R Vel", getRightEncoderVelocity(),
       "Gyro Angle", getGyroRotation(), "RawGyro", getGyroRaw(), 
-      "Gyro Velocity", angularVelocity, "Pitch", ahrs.getRoll()
-      // "Odometry X", translation.getX(), "Odometry Y", translation.getY()
+      "Gyro Velocity", angularVelocity, "Pitch", ahrs.getRoll(),
+      "Odometry X", pose.getTranslation().getX(), "Odometry Y", pose.getTranslation().getY(), 
+      "Odometry Theta", pose.getRotation().getDegrees()
       );
   }
 }
