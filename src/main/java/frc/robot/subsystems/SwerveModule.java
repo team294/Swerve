@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -118,6 +119,14 @@ public class SwerveModule {
       driveMotor.setNeutralMode(NeutralMode.Brake);
       turningMotor.setNeutralMode(NeutralMode.Brake);
     }
+  }
+
+  public void setDriveMotorPercentOutput(double percentOutput){
+    driveMotor.set(ControlMode.PercentOutput, percentOutput);
+  }
+
+  public void setTurnMotorPercentOutput(double percentOutput){
+    turningMotor.set(ControlMode.PercentOutput, percentOutput);
   }
 
   // ********** Main swerve module control methods
