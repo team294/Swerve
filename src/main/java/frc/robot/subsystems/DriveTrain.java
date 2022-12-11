@@ -32,16 +32,16 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   private boolean fastLogging = false; // true is enabled to run every cycle; false follows normal logging cycles
 
   // create swerve modules
-  private final SwerveModule swerveFrontLeft = new SwerveModule(
+  private final SwerveModule swerveFrontLeft = new SwerveModule( "FL",
       CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, 
       false, false, offsetAngleFrontLeftMotor);
-  private final SwerveModule swerveFrontRight = new SwerveModule(
+  private final SwerveModule swerveFrontRight = new SwerveModule( "FR",
       CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, 
       false, false, offsetAngleFrontRightMotor);
-  private final SwerveModule swerveBackLeft = new SwerveModule(
+  private final SwerveModule swerveBackLeft = new SwerveModule( "BL",
       CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, 
       false, false, offsetAngleBackLeftMotor);
-  private final SwerveModule swerveBackRight = new SwerveModule(
+  private final SwerveModule swerveBackRight = new SwerveModule( "BR",
       CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, 
       false, false, offsetAngleBackRightMotor);
   
@@ -330,9 +330,14 @@ public class DriveTrain extends SubsystemBase implements Loggable {
       SmartDashboard.putNumber("Drive Odometry Y", pose.getTranslation().getY());
       SmartDashboard.putNumber("Drive Odometry Theta", pose.getRotation().getDegrees());
 
-      //Values for bugfixing
+      // Values from each swerve module
+      swerveFrontLeft.updateShuffleboard();
+      swerveFrontRight.updateShuffleboard();
+      swerveBackLeft.updateShuffleboard();
+      swerveBackRight.updateShuffleboard();
+
+      // Values for bugfixing
       SmartDashboard.putNumber("Drive Bus Volt", swerveFrontLeft.getDriveBusVoltage());
-      SmartDashboard.putNumber("Drive Motor Temp", swerveFrontLeft.getDriveTemp());
     }
 
     // save current angVel values as previous values for next calculation
@@ -349,18 +354,14 @@ public class DriveTrain extends SubsystemBase implements Loggable {
 
     Pose2d pose = odometry.getPoseMeters();
     log.writeLog(logWhenDisabled, "Drive", "Update Variables", 
-      // "L1 Volts", leftMotor1.getMotorOutputVoltage(), "L2 Volts", leftMotor2.getMotorOutputVoltage(),
-      // "L1 Amps", leftMotor1.getSupplyCurrent(), "L2 Amps", leftMotor2.getSupplyCurrent(),
-      // "L1 Temp",leftMotor1.getTemperature(), "L2 Temp",leftMotor2.getTemperature(),
-      // "R1 Volts", rightMotor1.getMotorOutputVoltage(), "R2 Volts", rightMotor2.getMotorOutputVoltage(),
-      // "R1 Amps", rightMotor1.getSupplyCurrent(), "R2 Amps", rightMotor2.getSupplyCurrent(), 
-      // "R1 Temp",rightMotor1.getTemperature(), "R2 Temp",rightMotor2.getTemperature(),
-      // "Left Inches", getLeftEncoderInches(), "L Vel", getLeftEncoderVelocity(),
-      // "Right Inches", getRightEncoderInches(), "R Vel", getRightEncoderVelocity(),
       "Gyro Angle", getGyroRotation(), "RawGyro", getGyroRaw(), 
       "Gyro Velocity", angularVelocity, "Pitch", ahrs.getRoll(),
       "Odometry X", pose.getTranslation().getX(), "Odometry Y", pose.getTranslation().getY(), 
-      "Odometry Theta", pose.getRotation().getDegrees()
+      "Odometry Theta", pose.getRotation().getDegrees(),
+      swerveFrontLeft.getLogString(),
+      swerveFrontRight.getLogString(),
+      swerveBackLeft.getLogString(),
+      swerveBackRight.getLogString()
       );
   }
 }

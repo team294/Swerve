@@ -10,15 +10,22 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.SensorInitializationStrategy;
 import com.ctre.phoenix.sensors.WPI_CANCoder;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.Constants.ModuleConstants;
+import static frc.robot.utilities.StringUtil.*;
 
 public class SwerveModule {
+      
+  private final String swName;    // Name for this swerve module
+
   private final WPI_TalonFX driveMotor;
   private final WPI_TalonFX turningMotor;
 
@@ -42,6 +49,7 @@ public class SwerveModule {
   /**
    * Constructs a SwerveModule.
    *
+   * @param swName The name of this swerve module, for use in Shuffleboard and logging
    * @param driveMotorAddress The CANbus address of the drive motor.
    * @param turningMotorAddress The CANbus address of the turning motor.
    * @param turningEncoderAddress The CANbus address of the turning encoder.
@@ -50,9 +58,12 @@ public class SwerveModule {
    * @param turningOffsetDegrees Offset degrees in the turning motor to point to the 
    * front of the robot.  Value is the desired encoder zero point, in absolute magnet position reading.
    */
-  public SwerveModule(int driveMotorAddress, int turningMotorAddress, int turningEncoderAddress,
+  public SwerveModule(String swName, int driveMotorAddress, int turningMotorAddress, int turningEncoderAddress,
       boolean driveEncoderReversed, boolean turningEncoderReversed,
       double turningOffsetDegrees) {
+
+    // Save the module name
+    this.swName = swName;
 
     // Create motor and encoder objects
     driveMotor = new WPI_TalonFX(driveMotorAddress);
@@ -257,6 +268,10 @@ public class SwerveModule {
     return turningMotor.getMotorOutputVoltage();
   }
 
+  public double getTurningOutputPercent() {
+    return turningMotor.getMotorOutputPercent();
+  }
+
   public double getTurningStatorCurrent() {
     return turningMotor.getStatorCurrent();
   }
@@ -265,5 +280,29 @@ public class SwerveModule {
     return turningMotor.getTemperature();
   }
 
+  /**
+   * Updates relevant variables on Shuffleboard
+   */
+  public void updateShuffleboard() {
+    SmartDashboard.putNumber(buildString("Swerve angle ", swName), getTurningEncoderDegrees());
+    SmartDashboard.putNumber(buildString("Swerve drive temp ", swName), getDriveTemp());
+  }
 
+  /**
+   * Returns information about the swerve module to include in the filelog
+   * Format of the return string is comma-delimited name-value pairs, 
+   * *without* the final comma.  Ex.  "name1,value1,name2,value2"
+   */
+  public String getLogString() {
+    return buildString(
+      swName, " angle deg,", getTurningEncoderDegrees(), ",",
+      swName, " angle DPS,", getTurningEncoderVelocityDPS(), ",",
+      swName, " turn output,", getTurningOutputPercent(), ",",
+      swName, " drive meters,", getDriveEncoderMeters(), ",",
+      swName, " drive mps,", getDriveEncoderVelocity(), ",",
+      swName, " drive output,", getDriveOutputPercent(), ",",
+      swName, " drive temp,", getDriveTemp(), ",",
+      swName, " turn temp,", getTurningTemp()
+    );
+  }
 }
