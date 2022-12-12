@@ -4,29 +4,55 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.DriveTrain;
+import frc.robot.utilities.FileLog;
 
 public class TurnCalibration extends CommandBase {
-  /** Creates a new TurnCalibration. */
-  public TurnCalibration() {
-    // Use addRequirements() here to declare subsystem dependencies.
+
+  private DriveTrain driveTrain;
+  private FileLog log;
+  private double percentOutput, maxPercentOutput, rampTime, rampRate;
+  private final Timer timer = new Timer();
+  /** Creates a new DriveCalibration. */
+  public TurnCalibration(DriveTrain driveTrain, double maxPercentOutput, double rampTime, double rampRate, FileLog log) {
+    driveTrain = this.driveTrain;
+    log = this.log;
+    maxPercentOutput = this.maxPercentOutput;
+    rampTime = this.rampTime;
+    rampRate = this.rampRate;
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.reset();
+    timer.start();
+    driveTrain.setDriveModeCoast(false);
+    driveTrain.enableFastLogging(true);
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
-
+  public void execute() {
+    double currTime = timer.get();
+    percentOutput = MathUtil.clamp(currTime*rampRate, -maxPercentOutput, maxPercentOutput);
+    driveTrain.setTurningMotorsOutput(percentOutput);
+    driveTrain.enableFastLogging(true);
+  }
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    driveTrain.setDriveModeCoast(true);
+    driveTrain.stopMotors();
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return timer.hasElapsed(rampTime);
   }
 }
