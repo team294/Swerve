@@ -27,11 +27,11 @@ public class TurnCalibration extends CommandBase {
    */
 
   public TurnCalibration(DriveTrain driveTrain, double maxPercentOutput, double rampTime, double rampRate, FileLog log) {
-    driveTrain = this.driveTrain;
-    log = this.log;
-    maxPercentOutput = this.maxPercentOutput;
-    rampTime = this.rampTime;
-    rampRate = this.rampRate;
+    this.driveTrain = driveTrain;
+    this.log = log;
+    this.maxPercentOutput = maxPercentOutput;
+    this.rampTime = rampTime;
+    this.rampRate = rampRate;
     addRequirements(driveTrain);
   }
 
