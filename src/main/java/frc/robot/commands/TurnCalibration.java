@@ -17,6 +17,15 @@ public class TurnCalibration extends CommandBase {
   private double percentOutput, maxPercentOutput, rampTime, rampRate;
   private final Timer timer = new Timer();
   /** Creates a new DriveCalibration. */
+  /**
+   * 
+   * @param driveTrain 
+   * @param maxPercentOutput % output (between 0 and 1)
+   * @param rampTime ramp up time in seconds
+   * @param rampRate Ramp rate in pctOut/second 
+   * @param log
+   */
+
   public TurnCalibration(DriveTrain driveTrain, double maxPercentOutput, double rampTime, double rampRate, FileLog log) {
     driveTrain = this.driveTrain;
     log = this.log;

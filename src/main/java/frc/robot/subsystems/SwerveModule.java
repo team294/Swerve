@@ -294,6 +294,7 @@ public class SwerveModule {
    */
   public void updateShuffleboard() {
     SmartDashboard.putNumber(buildString("Swerve angle ", swName), getTurningEncoderDegrees());
+    SmartDashboard.putNumber(buildString("Swerve drive distance traveled", swName), getDriveEncoderMeters());
     SmartDashboard.putNumber(buildString("Swerve drive temp ", swName), getDriveTemp());
   }
 

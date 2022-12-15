@@ -60,9 +60,9 @@ public final class Constants {
         //TODO calibrate this value
         public static final int kEncoderCPR = 1024;                 // Encoder counts per revolution
         public static final double kWheelDiameterMeters = 0.15;
-        public static final double kDriveEncoderMetersPerTick =
+        public static final double kDriveEncoderMetersPerTick = 1;
             // Assumes the encoders are directly mounted on the wheel shafts
-            (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+            //(kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
         
         //TODO calibrate this value
         public static final double kPModuleTurningController = 1;
