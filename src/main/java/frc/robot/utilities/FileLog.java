@@ -52,6 +52,8 @@ public class FileLog {
 	public FileLog(String version) {
 		// When running on a RoboRio:  Logfile is placed in /home/lvuser/
 		// When running in simulation:  Logfile is placed in the VSCode project in the "sim" subdirectory
+		// 		Note that the "sim" directory must exist, otherwise the code will crash when simulating.
+		//		TODO when simulating, check if the sim directory exists, and if not then create it.
 		this(RobotBase.isReal() ? "/home/lvuser/logfile" : "sim\\logfilesim", version);
 	}
 	

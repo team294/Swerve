@@ -4,6 +4,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXFeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
@@ -146,8 +147,16 @@ public class SwerveModule {
    * Turns off the drive and turning motors.
    */
   public void stopMotors() {
-    driveMotor.set(0);
-    turningMotor.set(0);
+    driveMotor.set(ControlMode.PercentOutput, 0);
+    turningMotor.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void setDriveMotorPercentOutput(double percentOutput){
+    driveMotor.set(ControlMode.PercentOutput, percentOutput);
+  }
+
+  public void setTurnMotorPercentOutput(double percentOutput){
+    turningMotor.set(ControlMode.PercentOutput, percentOutput);
   }
 
   /**
@@ -172,8 +181,8 @@ public class SwerveModule {
         turningPIDController.calculate(getTurningEncoderDegrees() * Math.PI/180.0, state.angle.getRadians());
 
     // Calculate the turning motor output from the turning PID controller.
-    driveMotor.set(driveOutput);
-    turningMotor.set(turnOutput);
+    driveMotor.set(ControlMode.PercentOutput, driveOutput);
+    turningMotor.set(ControlMode.PercentOutput, turnOutput);
   }
 
   // ********** Encoder methods
@@ -285,6 +294,7 @@ public class SwerveModule {
    */
   public void updateShuffleboard() {
     SmartDashboard.putNumber(buildString("Swerve angle ", swName), getTurningEncoderDegrees());
+    SmartDashboard.putNumber(buildString("Swerve distance", swName), getDriveEncoderMeters());
     SmartDashboard.putNumber(buildString("Swerve drive temp ", swName), getDriveTemp());
   }
 
