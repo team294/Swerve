@@ -1,0 +1,8 @@
+[NetworkTables Storage 3.0]
+string "/Preferences/.type"="RobotPreferences"
+double "/Preferences/Drive.offsetAngleBackLeftMotor"=0
+double "/Preferences/Drive.offsetAngleBackRightMotor"=0
+double "/Preferences/Drive.offsetAngleFrontLeftMotor"=0
+double "/Preferences/Drive.offsetAngleFrontRightMotor"=0
+boolean "/Preferences/problemExists"=true
+string "/Preferences/problemSubsystem"="RobotPreferences, CAN Bus"

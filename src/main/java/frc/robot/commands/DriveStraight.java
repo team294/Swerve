@@ -8,12 +8,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 
 public class DriveStraight extends CommandBase {
   /** Creates a new DriveStraight. */
-  boolean double RelativeToRobot;
+  private boolean RelativeToRobot;
   private double DriveAngle;
   private double Percent;
+
   public DriveStraight(double Percent, double DriveAngle, boolean Relative) {
     // Use addRequirements() here to declare subsystem dependencies.
   }
+  
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {}

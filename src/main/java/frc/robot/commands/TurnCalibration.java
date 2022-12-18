@@ -16,6 +16,7 @@ public class TurnCalibration extends CommandBase {
   private FileLog log;
   private double percentOutput, maxPercentOutput, rampTime, rampRate;
   private final Timer timer = new Timer();
+
   /** Creates a new DriveCalibration. */
   /**
    * 
@@ -25,7 +26,6 @@ public class TurnCalibration extends CommandBase {
    * @param rampRate Ramp rate in pctOut/second 
    * @param log
    */
-
   public TurnCalibration(DriveTrain driveTrain, double maxPercentOutput, double rampTime, double rampRate, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
@@ -50,12 +50,11 @@ public class TurnCalibration extends CommandBase {
     double currTime = timer.get();
     percentOutput = MathUtil.clamp(currTime*rampRate, -maxPercentOutput, maxPercentOutput);
     driveTrain.setTurningMotorsOutput(percentOutput);
-    driveTrain.enableFastLogging(true);
   }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.setDriveModeCoast(true);
     driveTrain.stopMotors();
   }
 
