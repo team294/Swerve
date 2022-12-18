@@ -151,6 +151,10 @@ public class SwerveModule {
     turningMotor.set(ControlMode.PercentOutput, 0);
   }
 
+  /**
+   * 
+   * @param percentOutput Percent output to motor, -1 to +1
+   */
   public void setDriveMotorPercentOutput(double percentOutput){
     driveMotor.set(ControlMode.PercentOutput, percentOutput);
   }
