@@ -162,6 +162,7 @@ public class SwerveModule {
   public void setTurnMotorPercentOutput(double percentOutput){
     turningMotor.set(ControlMode.PercentOutput, percentOutput);
   }
+  
 
   /**
    * Sets the desired state for the module.
@@ -172,21 +173,23 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(getTurningEncoderDegrees()));
+        SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderDegrees()));
 
     // Calculate the drive output from the drive PID controller.
     final double driveOutput =
         drivePIDController.calculate(getDriveEncoderVelocity(), state.speedMetersPerSecond);
 
-    //TODO is this right?  Do we need to call reset()?  -Don
-    //TODO Is it better to use the PID controller on the Falcon to just set the wheel to an orientation?
-    // Calculate the turning motor output from the turning PID controller.
-    final double turnOutput =
-        turningPIDController.calculate(getTurningEncoderDegrees() * Math.PI/180.0, state.angle.getRadians());
+    final double driveFeedforward = m_driveFeedforward.calculate(state.speedMetersPerSecond); //need to make a feedfoward / feed back loop
 
     // Calculate the turning motor output from the turning PID controller.
-    driveMotor.set(ControlMode.PercentOutput, driveOutput);
-    turningMotor.set(ControlMode.PercentOutput, turnOutput);
+    final double turnOutput =
+        turningPIDController.calculate(getTurningEncoderDegrees(), state.angle.getRadians());
+
+    final double turnFeedforward =
+        m_turnFeedforward.calculate(turningPIDController.getSetpoint().velocity);
+
+    driveMotor.setVoltage(driveOutput + driveFeedforward);
+    turningMotor.setVoltage(turnOutput + turnFeedforward);
   }
 
   // ********** Encoder methods
