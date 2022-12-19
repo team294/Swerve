@@ -171,14 +171,20 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackLeft.setMotorModeCoast(setCoast);
     swerveBackRight.setMotorModeCoast(setCoast);
   }
-
+  /**
+   * 
+   * @param percentOutput Percent output to motor, -1 to +1
+   */
   public void setDriveMotorsOutput(double percentOutput){
     swerveFrontLeft.setDriveMotorPercentOutput(percentOutput);
     swerveFrontRight.setDriveMotorPercentOutput(percentOutput);
     swerveBackLeft.setDriveMotorPercentOutput(percentOutput);
     swerveBackRight.setDriveMotorPercentOutput(percentOutput);
   }
-
+  /**
+   * 
+   * @param percentOutput Percent output to motor, -1 to +1
+   */
   public void setTurningMotorsOutput(double percentOutput){
     swerveFrontLeft.setTurnMotorPercentOutput(percentOutput);
     swerveFrontRight.setTurnMotorPercentOutput(percentOutput);
