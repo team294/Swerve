@@ -14,6 +14,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -44,6 +45,9 @@ public class SwerveModule {
           new TrapezoidProfile.Constraints(
               ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond,
               ModuleConstants.kMaxModuleAngularAccelerationRadiansPerSecondSquared));
+
+    private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(ModuleConstants.kSDrive, ModuleConstants.kVDrive);
+    private final SimpleMotorFeedforward turnFeedforward = new SimpleMotorFeedforward(ModuleConstants.kSTurn, ModuleConstants.kVTurn);
   
   private double driveEncoderZero = 0;
 
@@ -177,22 +181,22 @@ public class SwerveModule {
   public void setDesiredState(SwerveModuleState desiredState) {
     // Optimize the reference state to avoid spinning further than 90 degrees
     SwerveModuleState state =
-        SwerveModuleState.optimize(desiredState, new Rotation2d(getTurningEncoderDegrees()));
+        SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(getTurningEncoderDegrees()));
 
-    // Calculate the drive output from the drive PID controller.
+    // Calculate the drive output from the drive PID controller. (in percent)
     final double driveOutput =
         drivePIDController.calculate(getDriveEncoderVelocity(), state.speedMetersPerSecond);
 
-    final double driveFeedforward = drivePIDController.calculate(state.speedMetersPerSecond); //drivePIDcontroller = feedfwdLoop?
+    final double driveFeedforwardPercent = driveFeedforward.calculate(state.speedMetersPerSecond); 
 
-    // Calculate the turning motor output from the turning PID controller.
+    // Calculate the turning motor output from the turning PID controller. (in percent)
     final double turnOutput =
-        turningPIDController.calculate(getTurningEncoderDegrees(), state.angle.getRadians());
+        turningPIDController.calculate(getTurningEncoderDegrees(), state.angle.getDegrees());
 
-    final double turnFeedforward = turningPIDController.calculate(turningPIDController.getSetpoint().velocity); //turnPIDcontroller = feedfwdLoop?
+    final double turnFeedforwardPercent = turnFeedforward.calculate(turningPIDController.getSetpoint().velocity); 
 
-    driveMotor.setVoltage(driveOutput + driveFeedforward);
-    turningMotor.setVoltage(turnOutput + turnFeedforward);
+    driveMotor.set(ControlMode.PercentOutput ,driveOutput + driveFeedforwardPercent);
+    turningMotor.set(ControlMode.PercentOutput ,turnOutput + turnFeedforwardPercent);
   }
 
   // ********** Encoder methods
