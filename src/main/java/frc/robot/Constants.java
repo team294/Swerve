@@ -73,10 +73,10 @@ public final class Constants {
         public static final double kMaxSpeedMetersPerSecond = 5.22; //last year's constant of differntiable drive, need to calibrate for swerve drive. below this mark
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
         public static final double compensationVoltage = 12.0;
-        public static final double kVDrive = 0.187;
+        public static final double kVDrive = 0.187; //in % output per meters per second
         public static final double kADrive = 0.025;
-        public static final double kSDrive = 0.024;
-        public static final double kPDrive = 0.280;
+        public static final double kSDrive = 0.024; //in % output
+        public static final double kPDrive = 0.280; //in % output per meters per second
         public static final double kDDrive = 0;
         public static final double kIDrive = 0;
         public static final double kAngularDrive = 0.030;
