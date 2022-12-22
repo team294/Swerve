@@ -46,7 +46,8 @@ public class RobotContainer {
     configureButtonBindings(); // configure button bindings
     configureShuffleboard(); // configure shuffleboard
 
-    driveTrain.setDefaultCommand(new DriveWithJoystick(driveTrain, leftJoystick, rightJoystick, log));
+    // TODO Enable default command to drive with joystick
+    // driveTrain.setDefaultCommand(new DriveWithJoystick(driveTrain, leftJoystick, rightJoystick, log));
   }
 
     /**
