@@ -74,6 +74,9 @@ public class RobotContainer {
     // SmartDashboard.putData("Drive Trajectory Absolute", new DriveFollowTrajectory(CoordType.kAbsolute, StopType.kBrake, trajectoryCache.cache[TrajectoryType.test.value], driveTrain, log));  
     SmartDashboard.putData("Calibrate Drive Motors", new DriveCalibration(driveTrain, 0.5, 5, 0.1, log));
     SmartDashboard.putData("Calibrate Turn Motors", new TurnCalibration(driveTrain, 0.5, 5, 0.1, log));
+    SmartDashboard.putData("Drive Turn 90 dps", new DriveSetState(driveTrain, 0, 90, log));
+    SmartDashboard.putData("Drive Turn 180 dps", new DriveSetState(driveTrain, 0, 180, log));
+    SmartDashboard.putData("Drive Turn -180 dps", new DriveSetState(driveTrain, 0, -180, log));
   }
 
   /**

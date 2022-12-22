@@ -171,6 +171,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackLeft.setMotorModeCoast(setCoast);
     swerveBackRight.setMotorModeCoast(setCoast);
   }
+
   /**
    * 
    * @param percentOutput Percent output to motor, -1 to +1
@@ -181,6 +182,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackLeft.setDriveMotorPercentOutput(percentOutput);
     swerveBackRight.setDriveMotorPercentOutput(percentOutput);
   }
+
   /**
    * 
    * @param percentOutput Percent output to motor, -1 to +1
@@ -192,6 +194,16 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackRight.setTurnMotorPercentOutput(percentOutput);
   }
 
+  /**
+   * 
+   * @param velocityDPS Speed for turning motors, in degrees/sec
+   */
+  public void setTurningMotorsVelocity(double velocityDPS){
+    swerveFrontLeft.setTurnMotorVelocity(velocityDPS);
+    swerveFrontRight.setTurnMotorVelocity(velocityDPS);
+    swerveBackLeft.setTurnMotorVelocity(velocityDPS);
+    swerveBackRight.setTurnMotorVelocity(velocityDPS);
+  }
 
 
   /**

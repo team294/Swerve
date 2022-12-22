@@ -36,7 +36,10 @@ public class SwerveModule {
   private final PIDController drivePIDController =
       new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
 
-  // Using a TrapezoidProfile PIDController to allow for smooth turning
+  private final PIDController turnSimplePIDController =
+      new PIDController(ModuleConstants.kPTurn, 0, 0);
+
+      // Using a TrapezoidProfile PIDController to allow for smooth turning
   private final ProfiledPIDController turningPIDController =
       new ProfiledPIDController(
           ModuleConstants.kPModuleTurningController,
@@ -84,7 +87,7 @@ public class SwerveModule {
 
     // configure turning motor
     turningMotor.configFactoryDefault();
-    turningMotor.setInverted(false);
+    turningMotor.setInverted(true);
     turningMotor.configNeutralDeadband(0.0);
     turningMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
     turningMotor.enableVoltageCompensation(true);
@@ -171,7 +174,16 @@ public class SwerveModule {
     turningMotor.set(ControlMode.PercentOutput, percentOutput);
   }
   
-
+  /**
+   * 
+   * @param velocityDPS Speed for turning motor, in degrees/sec
+   */
+  public void setTurnMotorVelocity(double velocityDPS){
+    final double turnFeedforwardPercent = turnFeedforward.calculate(velocityDPS); 
+    final double turnOutput = turnSimplePIDController.calculate(getTurningEncoderVelocityDPS(), velocityDPS);
+    turningMotor.set(ControlMode.PercentOutput ,turnFeedforwardPercent + turnOutput);  
+  }
+  
   /**
    * Sets the desired state for the module.
    * Note from Don -- I believe this method needs to be called repeatedly to function.
@@ -309,6 +321,7 @@ public class SwerveModule {
    */
   public void updateShuffleboard() {
     SmartDashboard.putNumber(buildString("Swerve angle ", swName), getTurningEncoderDegrees());
+    SmartDashboard.putNumber(buildString("Swerve angle dps", swName), getTurningEncoderVelocityDPS());
     SmartDashboard.putNumber(buildString("Swerve distance", swName), getDriveEncoderMeters());
     SmartDashboard.putNumber(buildString("Swerve drive temp ", swName), getDriveTemp());
   }
