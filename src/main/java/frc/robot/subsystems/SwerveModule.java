@@ -240,6 +240,7 @@ public class SwerveModule {
    * @param turningOffsetDegrees Desired encoder zero point, in absolute magnet position reading
    */
   public void calibrateTurningEncoderDegrees(double turningOffsetDegrees) {
+    // System.out.println(swName + " " + turningOffsetDegrees);
     turningEncoder.configMagnetOffset(turningOffsetDegrees);
   }
 
@@ -249,8 +250,8 @@ public class SwerveModule {
    * + = counterclockwise, - = clockwise
    */
   public double getTurningEncoderDegrees() {
-    //TODO Verify that the sign is correct, per the JavaDoc above.  If not, fix the code below (JavaDoc is the correct intent).
-    return turningEncoder.getPosition();
+    // return turningEncoder.getPosition();           // This does not return correct values for absolute position!  Use .getAbsolutePosition instead.
+    return turningEncoder.getAbsolutePosition();
   }
 
   /**
