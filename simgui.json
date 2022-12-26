@@ -3,6 +3,9 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/LiveWindow/DriveTrain": "Subsystem",
+      "/LiveWindow/Ungrouped/PIDController[10]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[11]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[12]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[1]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[2]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[3]": "PIDController",
@@ -11,6 +14,7 @@
       "/LiveWindow/Ungrouped/PIDController[6]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[7]": "PIDController",
       "/LiveWindow/Ungrouped/PIDController[8]": "PIDController",
+      "/LiveWindow/Ungrouped/PIDController[9]": "PIDController",
       "/LiveWindow/Ungrouped/Scheduler": "Scheduler",
       "/LiveWindow/Ungrouped/Talon FX [1]": "Motor Controller",
       "/LiveWindow/Ungrouped/Talon FX [2]": "Motor Controller",
@@ -24,6 +28,9 @@
       "/SmartDashboard/Calibrate Drive Motors": "Command",
       "/SmartDashboard/Calibrate Turn Motors": "Command",
       "/SmartDashboard/Clear Sticky Faults": "Command",
+      "/SmartDashboard/Drive Turn -180 dps": "Command",
+      "/SmartDashboard/Drive Turn 180 dps": "Command",
+      "/SmartDashboard/Drive Turn 90 dps": "Command",
       "/SmartDashboard/ZeroGyro": "Command"
     }
   }

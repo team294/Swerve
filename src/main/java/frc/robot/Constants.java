@@ -29,6 +29,9 @@ public final class Constants {
         public static final int CANDriveTurnBackLeftMotor = 7;
         public static final int CANDriveTurnBackRightMotor = 8;
 
+        // Note:  Remote sensors accessed by a Talon FX (Falcon 500) must have a CAN ID of 15 or less. See errata
+        // in CTRE documentation "Talon FX Remote Filter Device ID Must be 15 or Less" for more details.
+        // This applies to the turn encoders, which are used as remote sensors for the turn motors.
         public static final int CANTurnEncoderFrontLeft = 9;
         public static final int CANTurnEncoderFrontRight = 10;
         public static final int CANTurnEncoderBackLeft = 11;
