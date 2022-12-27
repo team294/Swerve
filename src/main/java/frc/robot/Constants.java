@@ -29,6 +29,9 @@ public final class Constants {
         public static final int CANDriveTurnBackLeftMotor = 7;
         public static final int CANDriveTurnBackRightMotor = 8;
 
+        // Note:  Remote sensors accessed by a Talon FX (Falcon 500) must have a CAN ID of 15 or less. See errata
+        // in CTRE documentation "Talon FX Remote Filter Device ID Must be 15 or Less" for more details.
+        // This applies to the turn encoders, which are used as remote sensors for the turn motors.
         public static final int CANTurnEncoderFrontLeft = 9;
         public static final int CANTurnEncoderFrontRight = 10;
         public static final int CANTurnEncoderBackLeft = 11;
@@ -73,23 +76,23 @@ public final class Constants {
         public static final double kMaxSpeedMetersPerSecond = 5.22; //last year's constant of differntiable drive, need to calibrate for swerve drive. below this mark
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
         public static final double compensationVoltage = 12.0;
-        public static final double kVDrive = 0.187;
-        public static final double kADrive = 0.025;
-        public static final double kSDrive = 0.024;
-        public static final double kPDrive = 0.280;
+        public static final double kVDrive = 0.0; //in % output per meters per second
+        public static final double kADrive = 0.0;
+        public static final double kSDrive = 0.0; //in % output
+        public static final double kPDrive = 0.0; //in % output per meters per second
         public static final double kDDrive = 0;
         public static final double kIDrive = 0;
-        public static final double kAngularDrive = 0.030;
+        public static final double kAngularDrive = 0.00;
 
 
 
-        public static final double kVTurn = 1.0;
-        public static final double kATurn = 1.0;
-        public static final double kSTurn = 1.0;
-        public static final double kPTurn = 1.0;
-        public static final double kDTurn = 1.0;
-        public static final double kITurn = 1.0;
-        public static final double kAngularTurn = 1.0;  //last year's constant of differntiable drive, need to calibrate for swerve drive. above this mark
+        public static final double kVTurn = 0.00041;
+        public static final double kATurn = 0.0;
+        public static final double kSTurn = 0.02;
+        public static final double kPTurn = 0.0004;
+        public static final double kDTurn = 0.0;
+        public static final double kITurn = 0.0;
+        public static final double kAngularTurn = 0.0;  //last year's constant of differntiable drive, need to calibrate for swerve drive. above this mark
       }
 
       public static final class DriveConstants {

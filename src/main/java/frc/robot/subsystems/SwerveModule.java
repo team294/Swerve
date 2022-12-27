@@ -14,6 +14,7 @@ import com.ctre.phoenix.sensors.WPI_CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
@@ -35,7 +36,10 @@ public class SwerveModule {
   private final PIDController drivePIDController =
       new PIDController(ModuleConstants.kPModuleDriveController, 0, 0);
 
-  // Using a TrapezoidProfile PIDController to allow for smooth turning
+  private final PIDController turnSimplePIDController =
+      new PIDController(ModuleConstants.kPTurn, 0, 0);
+
+      // Using a TrapezoidProfile PIDController to allow for smooth turning
   private final ProfiledPIDController turningPIDController =
       new ProfiledPIDController(
           ModuleConstants.kPModuleTurningController,
@@ -44,6 +48,9 @@ public class SwerveModule {
           new TrapezoidProfile.Constraints(
               ModuleConstants.kMaxModuleAngularSpeedRadiansPerSecond,
               ModuleConstants.kMaxModuleAngularAccelerationRadiansPerSecondSquared));
+
+    private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(ModuleConstants.kSDrive, ModuleConstants.kVDrive);
+    private final SimpleMotorFeedforward turnFeedforward = new SimpleMotorFeedforward(ModuleConstants.kSTurn, ModuleConstants.kVTurn);
   
   private double driveEncoderZero = 0;
 
@@ -80,7 +87,7 @@ public class SwerveModule {
 
     // configure turning motor
     turningMotor.configFactoryDefault();
-    turningMotor.setInverted(false);
+    turningMotor.setInverted(true);
     turningMotor.configNeutralDeadband(0.0);
     turningMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
     turningMotor.enableVoltageCompensation(true);
@@ -151,14 +158,32 @@ public class SwerveModule {
     turningMotor.set(ControlMode.PercentOutput, 0);
   }
 
+  /**
+   * 
+   * @param percentOutput Percent output to motor, -1 to +1
+   */
   public void setDriveMotorPercentOutput(double percentOutput){
     driveMotor.set(ControlMode.PercentOutput, percentOutput);
   }
-
+  
+  /**
+   * 
+   * @param percentOutput Percent output to motor, -1 to +1
+   */
   public void setTurnMotorPercentOutput(double percentOutput){
     turningMotor.set(ControlMode.PercentOutput, percentOutput);
   }
-
+  
+  /**
+   * 
+   * @param velocityDPS Speed for turning motor, in degrees/sec
+   */
+  public void setTurnMotorVelocity(double velocityDPS){
+    final double turnFeedforwardPercent = turnFeedforward.calculate(velocityDPS); 
+    final double turnOutput = turnSimplePIDController.calculate(getTurningEncoderVelocityDPS(), velocityDPS);
+    turningMotor.set(ControlMode.PercentOutput ,turnFeedforwardPercent + turnOutput);  
+  }
+  
   /**
    * Sets the desired state for the module.
    * Note from Don -- I believe this method needs to be called repeatedly to function.
@@ -170,19 +195,20 @@ public class SwerveModule {
     SwerveModuleState state =
         SwerveModuleState.optimize(desiredState, Rotation2d.fromDegrees(getTurningEncoderDegrees()));
 
-    // Calculate the drive output from the drive PID controller.
+    // Calculate the drive output from the drive PID controller. (in percent)
     final double driveOutput =
         drivePIDController.calculate(getDriveEncoderVelocity(), state.speedMetersPerSecond);
 
-    //TODO is this right?  Do we need to call reset()?  -Don
-    //TODO Is it better to use the PID controller on the Falcon to just set the wheel to an orientation?
-    // Calculate the turning motor output from the turning PID controller.
-    final double turnOutput =
-        turningPIDController.calculate(getTurningEncoderDegrees() * Math.PI/180.0, state.angle.getRadians());
+    final double driveFeedforwardPercent = driveFeedforward.calculate(state.speedMetersPerSecond); 
 
-    // Calculate the turning motor output from the turning PID controller.
-    driveMotor.set(ControlMode.PercentOutput, driveOutput);
-    turningMotor.set(ControlMode.PercentOutput, turnOutput);
+    // Calculate the turning motor output from the turning PID controller. (in percent)
+    final double turnOutput =
+        turningPIDController.calculate(getTurningEncoderDegrees(), state.angle.getDegrees());
+
+    final double turnFeedforwardPercent = turnFeedforward.calculate(turningPIDController.getSetpoint().velocity); 
+
+    driveMotor.set(ControlMode.PercentOutput ,driveOutput + driveFeedforwardPercent);
+    turningMotor.set(ControlMode.PercentOutput ,turnOutput + turnFeedforwardPercent);
   }
 
   // ********** Encoder methods
@@ -295,6 +321,7 @@ public class SwerveModule {
    */
   public void updateShuffleboard() {
     SmartDashboard.putNumber(buildString("Swerve angle ", swName), getTurningEncoderDegrees());
+    SmartDashboard.putNumber(buildString("Swerve angle dps", swName), getTurningEncoderVelocityDPS());
     SmartDashboard.putNumber(buildString("Swerve distance", swName), getDriveEncoderMeters());
     SmartDashboard.putNumber(buildString("Swerve drive temp ", swName), getDriveTemp());
   }
