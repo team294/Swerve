@@ -20,7 +20,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import frc.robot.CTREConfigs;
 import frc.robot.Constants.ModuleConstants;
 import static frc.robot.utilities.StringUtil.*;
 
@@ -80,16 +80,14 @@ public class SwerveModule {
 
     // configure drive motor
     driveMotor.configFactoryDefault();
+    driveMotor.configAllSettings(CTREConfigs.swerveDriveFXConfig);
     driveMotor.setInverted(false);
-    driveMotor.configNeutralDeadband(0.0);
-    driveMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
     driveMotor.enableVoltageCompensation(true);
 
     // configure turning motor
     turningMotor.configFactoryDefault();
+    turningMotor.configAllSettings(CTREConfigs.swerveAngleFXConfig);
     turningMotor.setInverted(true);
-    turningMotor.configNeutralDeadband(0.0);
-    turningMotor.configVoltageCompSaturation(ModuleConstants.compensationVoltage);
     turningMotor.enableVoltageCompensation(true);
 
     // other configs for drive and turning motors
@@ -101,12 +99,9 @@ public class SwerveModule {
 
     // configure turning encoder
     turningEncoder.configFactoryDefault();
+    turningEncoder.configAllSettings(CTREConfigs.swerveCanCoderConfig);
     turningEncoder.configSensorDirection(turningEncoderReversed);
-    turningEncoder.configSensorInitializationStrategy(SensorInitializationStrategy.BootToAbsolutePosition);
-    turningEncoder.configAbsoluteSensorRange(AbsoluteSensorRange.Signed_PlusMinus180);
     calibrateTurningEncoderDegrees(turningOffsetDegrees);
-
-    //TODO Stopped updates here in the constructor.  What else to do here?
 
     // Limit the PID Controller's input range between -pi and pi and set the input
     // to be continuous.
