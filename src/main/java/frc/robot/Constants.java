@@ -75,7 +75,6 @@ public final class Constants {
         
         public static final double kMaxSpeedMetersPerSecond = 5.22; //last year's constant of differntiable drive, need to calibrate for swerve drive. below this mark
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
-        public static final double compensationVoltage = 12.0;
         public static final double kVDrive = 0.0; //in % output per meters per second
         public static final double kADrive = 0.0;
         public static final double kSDrive = 0.0; //in % output
@@ -83,8 +82,6 @@ public final class Constants {
         public static final double kDDrive = 0;
         public static final double kIDrive = 0;
         public static final double kAngularDrive = 0.00;
-
-
 
         public static final double kVTurn = 0.00041;
         public static final double kATurn = 0.0;
@@ -109,7 +106,6 @@ public final class Constants {
                 new Translation2d(-RobotDimensions.DRIVETRAIN_WHEELBASE_METERS / 2, RobotDimensions.DRIVETRAIN_TRACKWIDTH_METERS / 2),
                 new Translation2d(-RobotDimensions.DRIVETRAIN_WHEELBASE_METERS / 2, -RobotDimensions.DRIVETRAIN_TRACKWIDTH_METERS / 2));
 
-        //TODO add 4 offset angle (0 for now, calibrate later)
         // Update the offset angles in RobotPreferences (in Shuffleboard), not in this code!
         // After updating in RobotPreferences, you will need to re-start the robot code for the changes to take effect.
         public static double offsetAngleFrontLeftMotor = 0;
