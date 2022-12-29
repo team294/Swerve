@@ -500,33 +500,13 @@
           "3,0": {
             "size": [
               2,
-              4
+              5
             ],
             "content": {
               "_type": "List Layout",
               "_title": "Swerve Modules",
               "Layout/Label position": "LEFT",
               "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle FL",
-                  "_title": "Angle FL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle FR",
-                  "_title": "Angle FR"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle BL",
-                  "_title": "Angle BL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle BR",
-                  "_title": "Angle BR"
-                },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Swerve distanceFL",
@@ -546,6 +526,46 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Swerve distanceBR",
                   "_title": "DistanceBR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle FL",
+                  "_title": "CCangle FL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle FL",
+                  "_title": "FXangle FL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle FR",
+                  "_title": "CCangle FR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle FR",
+                  "_title": "FXangle FR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle BL",
+                  "_title": "CCangle BL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle BL",
+                  "_title": "FXangle BL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle BR",
+                  "_title": "CCangle BR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle BR",
+                  "_title": "FXangle BR"
                 },
                 {
                   "_type": "Text View",
@@ -616,6 +636,11 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Drive Odometry Theta",
                   "_title": "Odometry Theta"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Drive Bus Volt",
+                  "_title": "Bus Volt"
                 }
               ]
             }
@@ -656,6 +681,6 @@
     "x": -1.0,
     "y": 0.0,
     "width": 1936.0,
-    "height": 801.0
+    "height": 1007.0
   }
 }

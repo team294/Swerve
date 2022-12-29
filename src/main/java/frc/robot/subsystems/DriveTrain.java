@@ -31,19 +31,11 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   private FileLog log;
   private boolean fastLogging = false; // true is enabled to run every cycle; false follows normal logging cycles
 
-  // create swerve modules
-  private final SwerveModule swerveFrontLeft = new SwerveModule( "FL",
-      CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, 
-      false, false, false, offsetAngleFrontLeftMotor);
-  private final SwerveModule swerveFrontRight = new SwerveModule( "FR",
-      CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, 
-      false, false, false, offsetAngleFrontRightMotor);
-  private final SwerveModule swerveBackLeft = new SwerveModule( "BL",
-      CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, 
-      false, false, false, offsetAngleBackLeftMotor);
-  private final SwerveModule swerveBackRight = new SwerveModule( "BR",
-      CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, 
-      false, false, false, offsetAngleBackRightMotor);
+  // variables for swerve modules
+  private final SwerveModule swerveFrontLeft;
+  private final SwerveModule swerveFrontRight;
+  private final SwerveModule swerveBackLeft;
+  private final SwerveModule swerveBackRight;
   
   // variables for gyro and gyro calibration
   private final AHRS ahrs;
@@ -66,6 +58,20 @@ public class DriveTrain extends SubsystemBase implements Loggable {
    */
   public DriveTrain(FileLog log) {
     this.log = log; // save reference to the fileLog
+
+    // create swerve modules
+    swerveFrontLeft = new SwerveModule( "FL",
+      CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, 
+      false, false, false, offsetAngleFrontLeftMotor, log);
+    swerveFrontRight = new SwerveModule( "FR",
+      CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, 
+      false, false, false, offsetAngleFrontRightMotor, log);
+    swerveBackLeft = new SwerveModule( "BL",
+      CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, 
+      false, false, false, offsetAngleBackLeftMotor, log);
+    swerveBackRight = new SwerveModule( "BR",
+      CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, 
+      false, false, false, offsetAngleBackRightMotor, log);
 
     // configure navX gyro
     AHRS gyro = null;
@@ -267,7 +273,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             centerOfRotationMeters);
     SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeedMetersPerSecond);
-    
+
     swerveFrontLeft.setDesiredState(swerveModuleStates[0], isOpenLoop);
     swerveFrontRight.setDesiredState(swerveModuleStates[1], isOpenLoop);
     swerveBackLeft.setDesiredState(swerveModuleStates[2], isOpenLoop);
