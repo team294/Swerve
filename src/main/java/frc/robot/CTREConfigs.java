@@ -1,6 +1,8 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -25,9 +27,13 @@ public final class CTREConfigs {
         swerveDriveFXConfig.openloopRamp = 0.0;     // Team364 uses 0.25
         swerveDriveFXConfig.closedloopRamp = 0.0;
 
-        SupplyCurrentLimitConfiguration driveSupplyLimit = new SupplyCurrentLimitConfiguration(
+        // Supply current limit is typically used to prevent breakers from tripping.
+        swerveDriveFXConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
             true, 35, 60, 0.1);
-        swerveDriveFXConfig.supplyCurrLimit = driveSupplyLimit;
+
+        // Stator current limit can be used to limit acceleration, torque, braking (when in brake mode), and motor heating.
+        // swerveDriveFXConfig.statorCurrLimit = new StatorCurrentLimitConfiguration(
+        //     enable, currentLimit, triggerThresholdCurrent, triggerThresholdTime);
     }
 
     // Configuration for swerve angle motors
@@ -43,12 +49,11 @@ public final class CTREConfigs {
         swerveAngleFXConfig.slot0.kD = 0.0;     // Team364 uses 12.0
         swerveAngleFXConfig.slot0.kF = 0.0;
         swerveAngleFXConfig.initializationStrategy = SensorInitializationStrategy.BootToZero;
-        swerveAngleFXConfig.openloopRamp = 0.0;     // Team364 uses 0.25
+        swerveAngleFXConfig.openloopRamp = 0.0;
         swerveAngleFXConfig.closedloopRamp = 0.0;
 
-        SupplyCurrentLimitConfiguration angleSupplyLimit = new SupplyCurrentLimitConfiguration(
+        swerveAngleFXConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
             true, 25, 40, 0.1);
-        swerveAngleFXConfig.supplyCurrLimit = angleSupplyLimit;
     }
 
     // Configuration for swerve angle CanCoders
@@ -56,6 +61,7 @@ public final class CTREConfigs {
     static {
         swerveCanCoderConfig = new CANCoderConfiguration();
 
+        // swerveCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Unsigned_0_to_360;
         swerveCanCoderConfig.absoluteSensorRange = AbsoluteSensorRange.Signed_PlusMinus180;
         swerveCanCoderConfig.initializationStrategy = SensorInitializationStrategy.BootToAbsolutePosition;
         swerveCanCoderConfig.sensorTimeBase = SensorTimeBase.PerSecond;

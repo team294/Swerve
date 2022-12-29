@@ -4,6 +4,8 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utilities.FileLog;
@@ -12,20 +14,21 @@ public class DriveSetState extends CommandBase {
 
   private DriveTrain driveTrain;
   private FileLog log;
-  private double driveSpeed, turnSpeed;
+  private SwerveModuleState[] desiredStates;
 
   /**
    * Sets the state of all 4 swerve motors
    * @param driveTrain
-   * @param driveSpeed speed for drive motors, in meters/sec
-   * @param turnSpeed speed for turn motors, in deg/sec
+   * @param driveSpeed speed for drive motors, in meters/sec (+ = forward)
+   * @param angle angle for wheel facing, in degrees (0 = toward front of robot, + = counter clockwise, - = clockwise)
    * @param log
    */
-  public DriveSetState(DriveTrain driveTrain, double driveSpeed, double turnSpeed, FileLog log) {
+  public DriveSetState(DriveTrain driveTrain, double driveSpeed, double angle, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
-    this.driveSpeed = driveSpeed;
-    this.turnSpeed = turnSpeed;
+    SwerveModuleState state = new SwerveModuleState(driveSpeed, Rotation2d.fromDegrees(angle));
+    desiredStates = new SwerveModuleState[] { state, state, state, state };
+
     addRequirements(driveTrain);
   }
 
@@ -37,8 +40,7 @@ public class DriveSetState extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // TODO driveSpeed does not work
-    driveTrain.setTurningMotorsVelocity(turnSpeed);
+    driveTrain.setModuleStates(desiredStates, true);
   }
 
   // Called once the command ends or is interrupted.

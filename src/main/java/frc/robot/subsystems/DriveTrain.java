@@ -34,16 +34,16 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   // create swerve modules
   private final SwerveModule swerveFrontLeft = new SwerveModule( "FL",
       CANDriveFrontLeftMotor, CANDriveTurnFrontLeftMotor, CANTurnEncoderFrontLeft, 
-      false, false, offsetAngleFrontLeftMotor);
+      false, false, false, offsetAngleFrontLeftMotor);
   private final SwerveModule swerveFrontRight = new SwerveModule( "FR",
       CANDriveFrontRightMotor, CANDriveTurnFrontRightMotor, CANTurnEncoderFrontRight, 
-      false, false, offsetAngleFrontRightMotor);
+      false, false, false, offsetAngleFrontRightMotor);
   private final SwerveModule swerveBackLeft = new SwerveModule( "BL",
       CANDriveBackLeftMotor, CANDriveTurnBackLeftMotor, CANTurnEncoderBackLeft, 
-      false, false, offsetAngleBackLeftMotor);
+      false, false, false, offsetAngleBackLeftMotor);
   private final SwerveModule swerveBackRight = new SwerveModule( "BR",
       CANDriveBackRightMotor, CANDriveTurnBackRightMotor, CANTurnEncoderBackRight, 
-      false, false, offsetAngleBackRightMotor);
+      false, false, false, offsetAngleBackRightMotor);
   
   // variables for gyro and gyro calibration
   private final AHRS ahrs;
@@ -198,12 +198,12 @@ public class DriveTrain extends SubsystemBase implements Loggable {
    * 
    * @param velocityDPS Speed for turning motors, in degrees/sec
    */
-  public void setTurningMotorsVelocity(double velocityDPS){
-    swerveFrontLeft.setTurnMotorVelocity(velocityDPS);
-    swerveFrontRight.setTurnMotorVelocity(velocityDPS);
-    swerveBackLeft.setTurnMotorVelocity(velocityDPS);
-    swerveBackRight.setTurnMotorVelocity(velocityDPS);
-  }
+  // public void setTurningMotorsVelocity(double velocityDPS){
+  //   swerveFrontLeft.setTurnMotorVelocity(velocityDPS);
+  //   swerveFrontRight.setTurnMotorVelocity(velocityDPS);
+  //   swerveBackLeft.setTurnMotorVelocity(velocityDPS);
+  //   swerveBackRight.setTurnMotorVelocity(velocityDPS);
+  // }
 
 
   /**
@@ -218,37 +218,36 @@ public class DriveTrain extends SubsystemBase implements Loggable {
 
   /**
    * Sets the swerve ModuleStates.
-   * Note from Don -- I believe this method needs to be called repeatedly to function.
    *
    * @param desiredStates The desired SwerveModule states.          
    * 0 = FrontLeft, 1 = FrontRight, 2 = BackLeft, 3 = BackRight
+   * @param isOpenLoop true = fixed drive percent output to approximate velocity, false = closed loop drive velocity control
    */
-  public void setModuleStates(SwerveModuleState[] desiredStates) {
+  public void setModuleStates(SwerveModuleState[] desiredStates, boolean isOpenLoop) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
         desiredStates, kMaxSpeedMetersPerSecond);
-    swerveFrontLeft.setDesiredState(desiredStates[0]);
-    swerveFrontRight.setDesiredState(desiredStates[1]);
-    swerveBackLeft.setDesiredState(desiredStates[2]);
-    swerveBackRight.setDesiredState(desiredStates[3]);
+    swerveFrontLeft.setDesiredState(desiredStates[0], isOpenLoop);
+    swerveFrontRight.setDesiredState(desiredStates[1], isOpenLoop);
+    swerveBackLeft.setDesiredState(desiredStates[2], isOpenLoop);
+    swerveBackRight.setDesiredState(desiredStates[3], isOpenLoop);
   }
 
   /**
    * Method to drive the robot using desired robot velocity and orientation, such as from joystick info.
-   * Note from Don -- I believe this method needs to be called repeatedly to function.
    *
    * @param xSpeed Speed of the robot in the x direction, in meters per second (+ = forward)
    * @param ySpeed Speed of the robot in the y direction, in meters per second (- = sideways)
    * @param rot Angular rate of the robot, in radians per second (+ = turn to the left)
    * @param fieldRelative True = the provided x and y speeds are relative to the field.
+   * @param isOpenLoop true = fixed drive percent output to approximate velocity, false = closed loop drive velocity control
    * False = the provided x and y speeds are relative to the current facing of the robot. 
    */
-  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
-    drive(xSpeed, ySpeed, rot, new Translation2d(), fieldRelative);
+  public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative, boolean isOpenLoop) {
+    drive(xSpeed, ySpeed, rot, new Translation2d(), fieldRelative, isOpenLoop);
   }
 
   /**
    * Method to drive the robot using desired robot velocity and orientation, such as from joystick info.
-   * Note from Don -- I believe this method needs to be called repeatedly to function.
    *
    * @param xSpeed Speed of the robot in the x direction, in meters per second (+ = forward)
    * @param ySpeed Speed of the robot in the y direction, in meters per second (- = sideways)
@@ -257,21 +256,22 @@ public class DriveTrain extends SubsystemBase implements Loggable {
    *     rotation at one corner of the robot and XSpeed, YSpeed = 0, then the robot will rotate around that corner.
    *     This feature may not work if fieldRelative = True (need to test).
    * @param fieldRelative True = the provided x and y speeds are relative to the field.
+   * @param isOpenLoop true = fixed drive percent output to approximate velocity, false = closed loop drive velocity control
    * False = the provided x and y speeds are relative to the current facing of the robot. 
    */
-   public void drive(double xSpeed, double ySpeed, double rot, Translation2d centerOfRotationMeters, boolean fieldRelative) {
+   public void drive(double xSpeed, double ySpeed, double rot, Translation2d centerOfRotationMeters, boolean fieldRelative, boolean isOpenLoop) {
     SwerveModuleState[] swerveModuleStates =
         kDriveKinematics.toSwerveModuleStates(
             fieldRelative
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(getGyroRotation()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             centerOfRotationMeters);
-    SwerveDriveKinematics.desaturateWheelSpeeds(
-        swerveModuleStates, kMaxSpeedMetersPerSecond);
-    swerveFrontLeft.setDesiredState(swerveModuleStates[0]);
-    swerveFrontRight.setDesiredState(swerveModuleStates[1]);
-    swerveBackLeft.setDesiredState(swerveModuleStates[2]);
-    swerveBackRight.setDesiredState(swerveModuleStates[3]);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeedMetersPerSecond);
+    
+    swerveFrontLeft.setDesiredState(swerveModuleStates[0], isOpenLoop);
+    swerveFrontRight.setDesiredState(swerveModuleStates[1], isOpenLoop);
+    swerveBackLeft.setDesiredState(swerveModuleStates[2], isOpenLoop);
+    swerveBackRight.setDesiredState(swerveModuleStates[3], isOpenLoop);
   }
 
   // ************ Odometry methods

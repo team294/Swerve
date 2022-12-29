@@ -44,6 +44,8 @@ public final class Constants {
         public static final int usbLeftJoystick = 1;
         public static final int usbRightJoystick = 2;
         public static final int usbCoPanel = 3;
+
+        public static final double joystickDeadband = 0.02;
     }
 
     public static final class RobotDimensions {
@@ -55,26 +57,29 @@ public final class Constants {
 
     }
 
-    public static final class ModuleConstants {
+    public static final class SwerveConstants {
         //TODO calibrate this value
         public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
         public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
     
-        //TODO calibrate this value
-        public static final int kEncoderCPR = 1024;                 // Encoder counts per revolution
-        public static final double kWheelDiameterMeters = 0.15;
-        public static final double kDriveEncoderMetersPerTick = 1;
-            // Assumes the encoders are directly mounted on the wheel shafts
-            //(kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
-        
+        //TODO calibrate these values
+        public static final double kEncoderCPR = 2048.0;                // Encoder counts per revolution of FalconFX motor pinion gear
+        public static final double kDriveGearRatio = (8.14 / 1.0);      // Team364 = 6.86:1.  Mk4i = 8.14 : 1
+        public static final double kTurningGearRatio = (150.0/7.0 / 1.0); // Team364 = 12.8:1.  Mk4i = 150/7 : 1
+        public static final double kWheelDiameterMeters = 0.097;        // Depends a little on the tread wear!
+        public static final double kDriveEncoderMetersPerTick = (kWheelDiameterMeters * Math.PI) / kEncoderCPR / kDriveGearRatio;
+        public static final double kTurningEncoderDegreesPerTick = 360.0/kEncoderCPR / kTurningGearRatio;
+
         //TODO calibrate this value
         public static final double kPModuleTurningController = 1;
     
         //TODO calibrate this value
         public static final double kPModuleDriveController = 1;
         
-        public static final double kMaxSpeedMetersPerSecond = 5.22; //last year's constant of differntiable drive, need to calibrate for swerve drive. below this mark
+        //TODO calibrate this block
+        public static final double kMaxSpeedMetersPerSecond = 4.5;
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
+        public static final double kMaxTurningRadiansPerSecond = 12.0;
         public static final double kVDrive = 0.0; //in % output per meters per second
         public static final double kADrive = 0.0;
         public static final double kSDrive = 0.0; //in % output
