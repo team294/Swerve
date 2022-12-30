@@ -16,10 +16,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 // import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import frc.robot.CTREConfigs;
 import frc.robot.Constants.SwerveConstants;
 import frc.robot.utilities.CTRESwerveModuleState;
 import frc.robot.utilities.FileLog;
+import frc.robot.utilities.MathBCR;
 
 import static frc.robot.utilities.StringUtil.*;
 
@@ -101,22 +103,23 @@ public class SwerveModule {
     turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.IntegratedSensor, 0, 100);
     turningMotor.setSensorPhase(turningEncoderReversed);
 
-    // TODO NOTE!!! When the Cancoder or TalonFX encoder settings are changed above, then the next call to 
-    // getCanCoderDegrees() may contain an old value, not the newly calibrated
-    // value!!!!  The CANBus runs asynchronously from this code, so the update sending the
-    // calibration to the CanCoder and then receiving an updated position measurement back
+    // NOTE!!! When the Cancoder or TalonFX encoder settings are changed above, then the next call to 
+    // getCanCoderDegrees() getTurningEncoderDegrees() may contain an old value, not the value based on 
+    // the updated configuration settings above!!!!  The CANBus runs asynchronously from this code, so 
+    // sending the updated configuration to the CanCoder/Falcon and then receiving an updated position measurement back
     // may take longer than this code.
-
-    // double finishTime = System.currentTimeMillis() + 200;
-    // while (System.currentTimeMillis() < finishTime) {}
+    // The timeouts in the configuration code above (100ms) should take care of this, but it does not always wait long enough.
+    // So, add a wait time here:
+    double finishTime = System.currentTimeMillis() + 200;
+    while (System.currentTimeMillis() < finishTime) {}
 
     // System.out.println(swName + " CanCoder " + getCanCoderDegrees() + " FX " + getTurningEncoderDegrees() + " pre-CAN");
     zeroDriveEncoder();
-    log.writeLogEcho(true, "SwerveModule", swName+" pre-CAN", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
+    // log.writeLogEcho(true, "SwerveModule", swName+" pre-CAN", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
     calibrateCanCoderDegrees(turningOffsetDegrees);
-    log.writeLogEcho(true, "SwerveModule", swName+" post-CAN", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
+    // log.writeLogEcho(true, "SwerveModule", swName+" post-CAN", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
     calibrateTurningEncoderDegrees(getCanCoderDegrees());
-    log.writeLogEcho(true, "SwerveModule", swName+" post-FX", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
+    // log.writeLogEcho(true, "SwerveModule", swName+" post-FX", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
     lastAngle = getTurningEncoderDegrees();
 
   }
@@ -237,7 +240,7 @@ public class SwerveModule {
 	 */
   public void zeroDriveEncoder() {
     driveEncoderZero = getDriveEncoderRaw();
-    log.writeLogEcho(true, "SwerveModule", "ZeroDriveEncoder", "driveEncoderZero", driveEncoderZero, "raw encoder", getDriveEncoderRaw(), "encoder meters", getDriveEncoderMeters());
+    log.writeLogEcho(true, buildString("SwerveModule ", swName), "ZeroDriveEncoder", "driveEncoderZero", driveEncoderZero, "raw encoder", getDriveEncoderRaw(), "encoder meters", getDriveEncoderMeters());
   }
 
   /**
@@ -280,7 +283,7 @@ public class SwerveModule {
    */
   public void calibrateTurningEncoderDegrees(double currentAngleDegrees) {
     turningEncoderZero = getTurningEncoderRaw() - (currentAngleDegrees / SwerveConstants.kTurningEncoderDegreesPerTick);
-    log.writeLogEcho(true, "SwerveModule", "calibrateTurningEncoder", "turningEncoderZero", turningEncoderZero, "raw encoder", getTurningEncoderRaw(), "set degrees", currentAngleDegrees, "encoder degrees", getTurningEncoderDegrees());
+    log.writeLogEcho(true, buildString("SwerveModule ", swName), "calibrateTurningEncoder", "turningEncoderZero", turningEncoderZero, "raw encoder", getTurningEncoderRaw(), "set degrees", currentAngleDegrees, "encoder degrees", getTurningEncoderDegrees());
   }
 
   /**
@@ -320,7 +323,7 @@ public class SwerveModule {
     // System.out.println(swName + " " + turningOffsetDegrees);
     // turningCanCoder.configMagnetOffset(offsetDegrees, 100);
     cancoderZero = -offsetDegrees;
-    log.writeLogEcho(true, "SwerveModule", "calibrateCanCoder", "cancoderZero", cancoderZero, "raw encoder", turningCanCoder.getAbsolutePosition(), "encoder degrees", getCanCoderDegrees());
+    log.writeLogEcho(true, buildString("SwerveModule ", swName), "calibrateCanCoder", "cancoderZero", cancoderZero, "raw encoder", turningCanCoder.getAbsolutePosition(), "encoder degrees", getCanCoderDegrees());
   }
 
   /**
@@ -329,8 +332,7 @@ public class SwerveModule {
    * + = counterclockwise, - = clockwise
    */
   public double getCanCoderDegrees() {
-    // return turningEncoder.getPosition();           // This does not return correct values for absolute position!  Use .getAbsolutePosition instead.
-    return turningCanCoder.getAbsolutePosition() - cancoderZero;
+    return MathBCR.normalizeAngle(turningCanCoder.getAbsolutePosition() - cancoderZero);
   }
 
   /**
