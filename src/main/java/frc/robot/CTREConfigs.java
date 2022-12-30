@@ -44,9 +44,9 @@ public final class CTREConfigs {
         swerveAngleFXConfig.voltageCompSaturation = 12.0;
         swerveAngleFXConfig.neutralDeadband = 0.0;
 
-        swerveAngleFXConfig.slot0.kP = 0.0;     // Team364 uses 0.60
+        swerveAngleFXConfig.slot0.kP = 0.0;     // Team364 uses 0.60.  Start with 0.05?
         swerveAngleFXConfig.slot0.kI = 0.0;
-        swerveAngleFXConfig.slot0.kD = 0.0;     // Team364 uses 12.0
+        swerveAngleFXConfig.slot0.kD = 0.0;     // Team364 uses 12.0.  Start with 10x P?
         swerveAngleFXConfig.slot0.kF = 0.0;
         swerveAngleFXConfig.initializationStrategy = SensorInitializationStrategy.BootToZero;
         swerveAngleFXConfig.openloopRamp = 0.0;

@@ -59,8 +59,8 @@ public final class Constants {
 
     public static final class SwerveConstants {
         //TODO calibrate this value
-        public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-        public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
+        // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
+        // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
     
         //TODO calibrate these values
         public static final double kEncoderCPR = 2048.0;                // Encoder counts per revolution of FalconFX motor pinion gear
@@ -71,30 +71,30 @@ public final class Constants {
         public static final double kTurningEncoderDegreesPerTick = 360.0/kEncoderCPR / kTurningGearRatio;
 
         //TODO calibrate this value
-        public static final double kPModuleTurningController = 1;
+        // public static final double kPModuleTurningController = 1;
     
         //TODO calibrate this value
-        public static final double kPModuleDriveController = 1;
+        // public static final double kPModuleDriveController = 1;
         
         //TODO calibrate this block
-        public static final double kMaxSpeedMetersPerSecond = 4.5;
+        public static final double kMaxSpeedMetersPerSecond = 3.0;
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
         public static final double kMaxTurningRadiansPerSecond = 12.0;
         public static final double kVDrive = 0.0; //in % output per meters per second
         public static final double kADrive = 0.0;
         public static final double kSDrive = 0.0; //in % output
-        public static final double kPDrive = 0.0; //in % output per meters per second
-        public static final double kDDrive = 0;
-        public static final double kIDrive = 0;
-        public static final double kAngularDrive = 0.00;
+        // public static final double kPDrive = 0.0; //in % output per meters per second
+        // public static final double kDDrive = 0;
+        // public static final double kIDrive = 0;
+        // public static final double kAngularDrive = 0.00;
 
-        public static final double kVTurn = 0.00041;
-        public static final double kATurn = 0.0;
-        public static final double kSTurn = 0.02;
-        public static final double kPTurn = 0.0004;
-        public static final double kDTurn = 0.0;
-        public static final double kITurn = 0.0;
-        public static final double kAngularTurn = 0.0;  //last year's constant of differntiable drive, need to calibrate for swerve drive. above this mark
+        // public static final double kVTurn = 0.00041;
+        // public static final double kATurn = 0.0;
+        // public static final double kSTurn = 0.02;
+        // public static final double kPTurn = 0.0004;
+        // public static final double kDTurn = 0.0;
+        // public static final double kITurn = 0.0;
+        // public static final double kAngularTurn = 0.0;  //last year's constant of differntiable drive, need to calibrate for swerve drive. above this mark
       }
 
       public static final class DriveConstants {
@@ -117,9 +117,6 @@ public final class Constants {
         public static double offsetAngleFrontRightMotor = 0;
         public static double offsetAngleBackLeftMotor = 0;
         public static double offsetAngleBackRightMotor = 0;
-
-        //TODO calibrate this value
-        public static final double kMaxSpeedMetersPerSecond = 3;
       }
 }
 

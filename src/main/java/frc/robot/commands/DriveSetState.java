@@ -18,12 +18,12 @@ public class DriveSetState extends CommandBase {
 
   /**
    * Sets the state of all 4 swerve motors
-   * @param driveTrain
    * @param driveSpeed speed for drive motors, in meters/sec (+ = forward)
    * @param angle angle for wheel facing, in degrees (0 = toward front of robot, + = counter clockwise, - = clockwise)
+   * @param driveTrain
    * @param log
    */
-  public DriveSetState(DriveTrain driveTrain, double driveSpeed, double angle, FileLog log) {
+  public DriveSetState(double driveSpeed, double angle, DriveTrain driveTrain, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
     SwerveModuleState state = new SwerveModuleState(driveSpeed, Rotation2d.fromDegrees(angle));

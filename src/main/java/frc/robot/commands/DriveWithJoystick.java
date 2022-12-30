@@ -30,12 +30,12 @@ public class DriveWithJoystick extends CommandBase {
   // private final double maxRevRateChange = -1.4;
 
   /**
-   * @param driveTrain drive train subsystem to use
    * @param leftJoystick left joystick.  X and Y axis control robot movement, relative to front of robot
    * @param rightJoystick right joystick.  X-axis controls robot rotation.
+   * @param driveTrain drive train subsystem to use
    * @param log filelog to use
    */
-  public DriveWithJoystick(DriveTrain driveTrain, Joystick leftJoystick, Joystick rightJoystick, FileLog log) {
+  public DriveWithJoystick(Joystick leftJoystick, Joystick rightJoystick, DriveTrain driveTrain, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
     this.leftJoystick = leftJoystick;

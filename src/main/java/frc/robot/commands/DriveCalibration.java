@@ -20,13 +20,13 @@ public class DriveCalibration extends CommandBase {
   /** Creates a new DriveCalibration. */
   /**
    * 
-   * @param driveTrain
    * @param maxPercentOutput % output (between 0 and 1)
    * @param rampTime  ramp up time in seconds
    * @param rampRate Ramp rate in pctOut/second 
+   * @param driveTrain
    * @param log
    */
-  public DriveCalibration(DriveTrain driveTrain, double maxPercentOutput, double rampTime, double rampRate, FileLog log) {
+  public DriveCalibration(double maxPercentOutput, double rampTime, double rampRate, DriveTrain driveTrain, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
     this.maxPercentOutput = maxPercentOutput;

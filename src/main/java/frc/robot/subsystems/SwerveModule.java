@@ -69,12 +69,14 @@ public class SwerveModule {
     // configure drive motor
     driveMotor.configFactoryDefault(100);
     driveMotor.configAllSettings(CTREConfigs.swerveDriveFXConfig, 100);
+    driveMotor.selectProfileSlot(0, 0);
     driveMotor.setInverted(false);
     driveMotor.enableVoltageCompensation(true);
 
     // configure turning motor
     turningMotor.configFactoryDefault(100);
     turningMotor.configAllSettings(CTREConfigs.swerveAngleFXConfig, 100);
+    turningMotor.selectProfileSlot(0, 0);
     turningMotor.setInverted(true);
     turningMotor.enableVoltageCompensation(true);
 

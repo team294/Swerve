@@ -22,6 +22,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.utilities.FileLog;
 import static frc.robot.Constants.Ports.*;
 import static frc.robot.Constants.DriveConstants.*;
+
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.utilities.*;
 
 
@@ -231,11 +233,23 @@ public class DriveTrain extends SubsystemBase implements Loggable {
    */
   public void setModuleStates(SwerveModuleState[] desiredStates, boolean isOpenLoop) {
     SwerveDriveKinematics.desaturateWheelSpeeds(
-        desiredStates, kMaxSpeedMetersPerSecond);
+        desiredStates, SwerveConstants.kMaxSpeedMetersPerSecond);
     swerveFrontLeft.setDesiredState(desiredStates[0], isOpenLoop);
     swerveFrontRight.setDesiredState(desiredStates[1], isOpenLoop);
     swerveBackLeft.setDesiredState(desiredStates[2], isOpenLoop);
     swerveBackRight.setDesiredState(desiredStates[3], isOpenLoop);
+  }
+
+  /**
+   * Reads the current swerve ModuleStates.
+   * @return The current module states, as measured by the encoders.  
+   * 0 = FrontLeft, 1 = FrontRight, 2 = BackLeft, 3 = BackRight
+   */
+  public SwerveModuleState[] getModuleStates() {
+    return new SwerveModuleState[] {
+      swerveFrontLeft.getState(), swerveFrontRight.getState(),
+      swerveBackLeft.getState(), swerveBackRight.getState()
+    };
   }
 
   /**
@@ -272,7 +286,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
                 ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(getGyroRotation()))
                 : new ChassisSpeeds(xSpeed, ySpeed, rot),
             centerOfRotationMeters);
-    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, kMaxSpeedMetersPerSecond);
+    SwerveDriveKinematics.desaturateWheelSpeeds(swerveModuleStates, SwerveConstants.kMaxSpeedMetersPerSecond);
 
     swerveFrontLeft.setDesiredState(swerveModuleStates[0], isOpenLoop);
     swerveFrontRight.setDesiredState(swerveModuleStates[1], isOpenLoop);
@@ -341,10 +355,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
 
     // Update robot odometry
     double degrees = getGyroRotation();
-    odometry.update(Rotation2d.fromDegrees(degrees), new SwerveModuleState[] {
-          swerveFrontLeft.getState(), swerveFrontRight.getState(),
-          swerveBackLeft.getState(), swerveBackRight.getState()
-        });
+    odometry.update(Rotation2d.fromDegrees(degrees), getModuleStates());
         
     if(fastLogging || log.getLogRotation() == log.DRIVE_CYCLE) {
       updateDriveLog(false);

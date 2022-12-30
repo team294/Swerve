@@ -44,7 +44,7 @@ public class DriveResetPose extends CommandBase {
   @Override
   public void initialize() {
     log.writeLog(false, "DriveResetPose", "Init", "Curr X", curX, "CurrY", curY, "CurAng", curAngle);
-    driveTrain.resetPose(new Pose2d(curX, curY, new Rotation2d(Math.toRadians(curAngle))));
+    driveTrain.resetPose(new Pose2d(curX, curY, Rotation2d.fromDegrees(curAngle)));
   }
 
   // Called every time the scheduler runs while the command is scheduled.
