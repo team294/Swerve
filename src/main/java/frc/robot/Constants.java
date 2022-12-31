@@ -69,9 +69,9 @@ public final class Constants {
         public static final double kMaxSpeedMetersPerSecond = 3.0;
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
         public static final double kMaxTurningRadiansPerSecond = 12.0;
-        public static final double kVDrive = 0.0; //in % output per meters per second
+        public static final double kVDrive = 0.226; // CALIBRATED = 0.226.  in % output per meters per second
         public static final double kADrive = 0.0;
-        public static final double kSDrive = 0.0; //in % output
+        public static final double kSDrive = 0.017; // CALIBRATED = 0.017.  in % output
         // public static final double kPDrive = 0.0; //in % output per meters per second
         // public static final double kDDrive = 0;
         // public static final double kIDrive = 0;

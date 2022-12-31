@@ -56,14 +56,14 @@ public class DriveWithJoystick extends CommandBase {
   @Override
   public void execute() {
     // curTime = System.currentTimeMillis() / 1000.0;
-    fwdVelocity = -leftJoystick.getY() * SwerveConstants.kMaxSpeedMetersPerSecond;
-    leftVelocity = -leftJoystick.getX() * SwerveConstants.kMaxSpeedMetersPerSecond;
-    turnRate = rightJoystick.getX() * SwerveConstants.kMaxTurningRadiansPerSecond;
+    fwdVelocity = -leftJoystick.getY();
+    leftVelocity = -leftJoystick.getX();
+    turnRate = -rightJoystick.getX();
 
     // Apply deadbands
-    fwdVelocity = (Math.abs(fwdVelocity) < OIConstants.joystickDeadband) ? 0 : fwdVelocity;
-    leftVelocity = (Math.abs(leftVelocity) < OIConstants.joystickDeadband) ? 0 : leftVelocity;
-    turnRate = (Math.abs(turnRate) < OIConstants.joystickDeadband) ? 0 : turnRate;
+    fwdVelocity = (Math.abs(fwdVelocity) < OIConstants.joystickDeadband) ? 0 : fwdVelocity * SwerveConstants.kMaxSpeedMetersPerSecond;
+    leftVelocity = (Math.abs(leftVelocity) < OIConstants.joystickDeadband) ? 0 : leftVelocity * SwerveConstants.kMaxSpeedMetersPerSecond;
+    turnRate = (Math.abs(turnRate) < OIConstants.joystickDeadband) ? 0 : turnRate * SwerveConstants.kMaxTurningRadiansPerSecond;
 
     if(log.getLogRotation() == log.DRIVE_CYCLE) {
       log.writeLog(false, "DriveWithJoystickArcade", "Joystick", "Fwd", fwdVelocity, "Left", leftVelocity, "Turn", turnRate);
@@ -77,7 +77,7 @@ public class DriveWithJoystick extends CommandBase {
 
     // }
     
-    driveTrain.drive(fwdVelocity, leftVelocity, turnRate, false, true);
+    driveTrain.drive(fwdVelocity, leftVelocity, turnRate, true, true);
 
     // lastFwdPercent = fwdPercent;
     // lastTime = curTime;

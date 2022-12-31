@@ -47,7 +47,7 @@ public class RobotContainer {
     configureShuffleboard(); // configure shuffleboard
 
     // TODO Enable default command to drive with joystick
-    // driveTrain.setDefaultCommand(new DriveWithJoystick(driveTrain, leftJoystick, rightJoystick, log));
+    driveTrain.setDefaultCommand(new DriveWithJoystick(leftJoystick, rightJoystick, driveTrain, log));
   }
 
     /**
@@ -73,7 +73,7 @@ public class RobotContainer {
     SmartDashboard.putData("Drive Wheels 0 deg", new DriveSetState(0, 0, driveTrain, log));
     SmartDashboard.putData("Drive Wheels +85 deg", new DriveSetState(0, 85, driveTrain, log));
     SmartDashboard.putData("Drive Wheels +95 deg", new DriveSetState(0, 95, driveTrain, log));
-    SmartDashboard.putData("Drive Straight", new DriveStraight(false, true, driveTrain, log));
+    SmartDashboard.putData("Drive Straight", new DriveStraight(false, false, driveTrain, log));
     // SmartDashboard.putData("Drive Trajectory Relative", new DriveFollowTrajectory(CoordType.kRelative, StopType.kBrake, trajectoryCache.cache[TrajectoryType.test.value], false, PIDType.kTalon, driveTrain, log));
     // SmartDashboard.putData("Drive Trajectory Curve Relative", new DriveFollowTrajectory(CoordType.kRelative, StopType.kBrake, trajectoryCache.cache[TrajectoryType.testCurve.value], false, PIDType.kTalon, driveTrain, log));
     // SmartDashboard.putData("Drive Trajectory Absolute", new DriveFollowTrajectory(CoordType.kAbsolute, StopType.kBrake, trajectoryCache.cache[TrajectoryType.test.value], driveTrain, log));  
