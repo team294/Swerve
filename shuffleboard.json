@@ -429,13 +429,13 @@
                 },
                 {
                   "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Drive Wheels +175 deg",
-                  "_title": "Drive Wheels +175 deg"
+                  "_source0": "network_table:///SmartDashboard/Drive Wheels +85 deg",
+                  "_title": "Drive Wheels +85 deg"
                 },
                 {
                   "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/Drive Wheels -175 deg",
-                  "_title": "Drive Wheels -175 deg"
+                  "_source0": "network_table:///SmartDashboard/Drive Wheels +95 deg",
+                  "_title": "Drive Wheels +95 deg"
                 }
               ]
             }

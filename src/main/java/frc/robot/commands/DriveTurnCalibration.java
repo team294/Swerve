@@ -42,6 +42,7 @@ public class DriveTurnCalibration extends CommandBase {
     timer.start();
     driveTrain.setDriveModeCoast(false);
     driveTrain.enableFastLogging(true);
+    log.writeLog(false, "DriveTurnCalibration", "Initialize", "maxPctOut", maxPercentOutput, "rampTime", rampTime, "rampRate", rampRate);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -57,6 +58,7 @@ public class DriveTurnCalibration extends CommandBase {
   public void end(boolean interrupted) {
     driveTrain.stopMotors();
     driveTrain.enableFastLogging(false);
+    log.writeLog(false, "DriveTurnCalibration", "End");
   }
 
   // Returns true when the command should end.

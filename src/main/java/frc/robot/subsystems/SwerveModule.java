@@ -37,7 +37,6 @@ public class SwerveModule {
   private double driveEncoderZero = 0;      // Reference raw encoder reading for drive FalconFX encoder.  Calibration sets this to zero.
   private double cancoderZero = 0;          // Reference raw encoder reading for CanCoder.  Calibration sets this to the absolute position from RobotPreferences.
   private double turningEncoderZero = 0;    // Reference raw encoder reading for turning FalconFX encoder.  Calibration sets this to match the CanCoder.
-  private double lastAngle;
 
   private final SimpleMotorFeedforward driveFeedforward = new SimpleMotorFeedforward(SwerveConstants.kSDrive, SwerveConstants.kVDrive, SwerveConstants.kADrive);
   // private final SimpleMotorFeedforward turnFeedforward = new SimpleMotorFeedforward(SwerveConstants.kSTurn, SwerveConstants.kVTurn);
@@ -120,7 +119,6 @@ public class SwerveModule {
     // log.writeLogEcho(true, "SwerveModule", swName+" post-CAN", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
     calibrateTurningEncoderDegrees(getCanCoderDegrees());
     // log.writeLogEcho(true, "SwerveModule", swName+" post-FX", "Cancoder", getCanCoderDegrees(), "FX", getTurningEncoderDegrees());
-    lastAngle = getTurningEncoderDegrees();
 
   }
 
@@ -218,10 +216,9 @@ public class SwerveModule {
 
     // Set turning motor target angle
     // Prevent rotating module if speed is less then 1%. Prevents Jittering.
-    double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeedMetersPerSecond * 0.01)) 
-      ? lastAngle : desiredState.angle.getDegrees(); 
-    turningMotor.set(ControlMode.Position, calculateTurningEncoderTargetRaw(angle)); 
-    lastAngle = angle;
+    // double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeedMetersPerSecond * 0.01)) 
+    //   ? getTurningEncoderDegrees() : desiredState.angle.getDegrees(); 
+    turningMotor.set(ControlMode.Position, calculateTurningEncoderTargetRaw(desiredState.angle.getDegrees())); 
   }
 
   // ********** Encoder methods
@@ -301,7 +298,7 @@ public class SwerveModule {
    * @return turning FalconFX encoder raw value equivalent to input facing.
    */
   public double calculateTurningEncoderTargetRaw(double targetDegrees) {
-    return (getTurningEncoderRaw() - turningEncoderZero) * SwerveConstants.kTurningEncoderDegreesPerTick;
+    return targetDegrees / SwerveConstants.kTurningEncoderDegreesPerTick + turningEncoderZero;
   }
 
   /**
@@ -387,7 +384,7 @@ public class SwerveModule {
    * Updates relevant variables on Shuffleboard
    */
   public void updateShuffleboard() {
-    SmartDashboard.putNumber(buildString("Swerve FXangle ", swName), getTurningEncoderDegrees());
+    SmartDashboard.putNumber(buildString("Swerve FXangle ", swName), MathBCR.normalizeAngle(getTurningEncoderDegrees()));
     SmartDashboard.putNumber(buildString("Swerve CCangle ", swName), getCanCoderDegrees());
     SmartDashboard.putNumber(buildString("Swerve FXangle dps", swName), getTurningEncoderVelocityDPS());
     SmartDashboard.putNumber(buildString("Swerve distance", swName), getDriveEncoderMeters());
@@ -403,7 +400,7 @@ public class SwerveModule {
     return buildString(
       swName, " CCangle deg,", getCanCoderDegrees(), ",",
       swName, " CCangle DPS,", getCanCoderVelocityDPS(), ",",
-      swName, " FXangle deg,", getTurningEncoderDegrees(), ",",
+      swName, " FXangle deg,", MathBCR.normalizeAngle(getTurningEncoderDegrees()), ",",
       swName, " FXangle DPS,", getTurningEncoderVelocityDPS(), ",",
       swName, " turn output,", getTurningOutputPercent(), ",",
       swName, " drive meters,", getDriveEncoderMeters(), ",",

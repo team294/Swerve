@@ -49,32 +49,21 @@ public final class Constants {
     }
 
     public static final class RobotDimensions {
-        // TODO Update values
         //left to right distance between the drivetrain wheels; should be measured from center to center
-        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785;
+        public static final double DRIVETRAIN_TRACKWIDTH_METERS = 0.57785;      // CALIBRATED
         //front-back distance between the drivetrain wheels; should be measured from center to center
-        public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57785;
+        public static final double DRIVETRAIN_WHEELBASE_METERS = 0.57785;       // CALIBRATED
 
     }
 
     public static final class SwerveConstants {
-        //TODO calibrate this value
-        // public static final double kMaxModuleAngularSpeedRadiansPerSecond = 2 * Math.PI;
-        // public static final double kMaxModuleAngularAccelerationRadiansPerSecondSquared = 2 * Math.PI;
-    
-        //TODO calibrate these values
-        public static final double kEncoderCPR = 2048.0;                // Encoder counts per revolution of FalconFX motor pinion gear
-        public static final double kDriveGearRatio = (8.14 / 1.0);      // Team364 = 6.86:1.  Mk4i = 8.14 : 1
-        public static final double kTurningGearRatio = (150.0/7.0 / 1.0); // Team364 = 12.8:1.  Mk4i = 150/7 : 1
-        public static final double kWheelDiameterMeters = 0.097;        // Depends a little on the tread wear!
+        // Encoder calibration to meters travelled or wheel facing degrees
+        public static final double kEncoderCPR = 2048.0;                // CALIBRATED = 2048.  Encoder counts per revolution of FalconFX motor pinion gear
+        public static final double kDriveGearRatio = (8.14 / 1.0);      // CALIBRATED = 8.14/1.0.  Team364 (MK3i?) = 6.86:1.  Mk4i = 8.14 : 1
+        public static final double kTurningGearRatio = (150.0/7.0 / 1.0); // CALIBRATED = 150.0/7.0.  Team364 (MK3i?) = 12.8:1.  Mk4i = 150/7 : 1
+        public static final double kWheelDiameterMeters = 0.102;        // CALIBRATED = 0.102.  Depends a little on the tread wear!
         public static final double kDriveEncoderMetersPerTick = (kWheelDiameterMeters * Math.PI) / kEncoderCPR / kDriveGearRatio;
         public static final double kTurningEncoderDegreesPerTick = 360.0/kEncoderCPR / kTurningGearRatio;
-
-        //TODO calibrate this value
-        // public static final double kPModuleTurningController = 1;
-    
-        //TODO calibrate this value
-        // public static final double kPModuleDriveController = 1;
         
         //TODO calibrate this block
         public static final double kMaxSpeedMetersPerSecond = 3.0;

@@ -2,7 +2,6 @@ package frc.robot;
 
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.can.FilterConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFXConfiguration;
 import com.ctre.phoenix.sensors.AbsoluteSensorRange;
 import com.ctre.phoenix.sensors.CANCoderConfiguration;
@@ -44,13 +43,13 @@ public final class CTREConfigs {
         swerveAngleFXConfig.voltageCompSaturation = 12.0;
         swerveAngleFXConfig.neutralDeadband = 0.0;
 
-        swerveAngleFXConfig.slot0.kP = 0.0;     // Team364 uses 0.60.  Start with 0.05?
+        swerveAngleFXConfig.slot0.kP = 0.15;     // CALIBRATED = 0.15.  Team364 uses 0.60.
         swerveAngleFXConfig.slot0.kI = 0.0;
-        swerveAngleFXConfig.slot0.kD = 0.0;     // Team364 uses 12.0.  Start with 10x P?
+        swerveAngleFXConfig.slot0.kD = 3.0;     // CALIBRATED = 3.0.  Team364 uses 12.0.
         swerveAngleFXConfig.slot0.kF = 0.0;
         swerveAngleFXConfig.initializationStrategy = SensorInitializationStrategy.BootToZero;
-        swerveAngleFXConfig.openloopRamp = 0.0;
-        swerveAngleFXConfig.closedloopRamp = 0.0;
+        swerveAngleFXConfig.openloopRamp = 0.1;
+        swerveAngleFXConfig.closedloopRamp = 0.1;   // CALIBRATED = 0.1.
 
         swerveAngleFXConfig.supplyCurrLimit = new SupplyCurrentLimitConfiguration(
             true, 25, 40, 0.1);
