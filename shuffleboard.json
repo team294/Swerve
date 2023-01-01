@@ -11,9 +11,9 @@
         "vgap": 16.0,
         "titleType": 0,
         "tiles": {
-          "0,0": {
+          "5,0": {
             "size": [
-              1,
+              4,
               1
             ],
             "content": {
@@ -22,7 +22,7 @@
               "_title": "problemSubsystem"
             }
           },
-          "1,0": {
+          "3,0": {
             "size": [
               1,
               1
@@ -31,30 +31,8 @@
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/problemExists",
               "_title": "problemExists",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "2,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Clear Sticky Faults",
-              "_title": "Clear Sticky Faults"
-            }
-          },
-          "3,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/ZeroGyro",
-              "_title": "ZeroGyro"
+              "Colors/Color when true": "#FF0000FF",
+              "Colors/Color when false": "#000000FF"
             }
           },
           "4,0": {
@@ -64,133 +42,8 @@
             ],
             "content": {
               "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Calibrate Drive Motors",
-              "_title": "Calibrate Drive Motors"
-            }
-          },
-          "5,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Command",
-              "_source0": "network_table:///SmartDashboard/Calibrate Turn Motors",
-              "_title": "Calibrate Turn Motors"
-            }
-          },
-          "6,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/RobotPrefs Initialized",
-              "_title": "RobotPrefs Initialized",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "7,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/Drive isGyroReading",
-              "_title": "Drive isGyroReading",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "8,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Raw Gyro",
-              "_title": "Drive Raw Gyro"
-            }
-          },
-          "9,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Gyro Rotation",
-              "_title": "Drive Gyro Rotation"
-            }
-          },
-          "10,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive AngVel",
-              "_title": "Drive AngVel"
-            }
-          },
-          "11,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Pitch",
-              "_title": "Drive Pitch"
-            }
-          },
-          "12,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Odometry X",
-              "_title": "Drive Odometry X"
-            }
-          },
-          "0,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Odometry Y",
-              "_title": "Drive Odometry Y"
-            }
-          },
-          "1,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Odometry Theta",
-              "_title": "Drive Odometry Theta"
-            }
-          },
-          "7,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve angle FL",
-              "_title": "Swerve angle FL"
+              "_source0": "network_table:///SmartDashboard/Clear Sticky Faults",
+              "_title": "ClearStickyFault"
             }
           },
           "3,1": {
@@ -199,9 +52,11 @@
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve distanceFL",
-              "_title": "Swerve distanceFL"
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/RobotPrefs Initialized",
+              "_title": "Prefs Initialized",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           },
           "4,1": {
@@ -210,119 +65,11 @@
               1
             ],
             "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve drive temp FL",
-              "_title": "Swerve drive temp FL"
-            }
-          },
-          "8,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve angle FR",
-              "_title": "Swerve angle FR"
-            }
-          },
-          "6,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve distanceFR",
-              "_title": "Swerve distanceFR"
-            }
-          },
-          "7,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve drive temp FR",
-              "_title": "Swerve drive temp FR"
-            }
-          },
-          "7,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve angle BL",
-              "_title": "Swerve angle BL"
-            }
-          },
-          "9,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve distanceBL",
-              "_title": "Swerve distanceBL"
-            }
-          },
-          "10,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve drive temp BL",
-              "_title": "Swerve drive temp BL"
-            }
-          },
-          "8,3": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve angle BR",
-              "_title": "Swerve angle BR"
-            }
-          },
-          "12,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve distanceBR",
-              "_title": "Swerve distanceBR"
-            }
-          },
-          "0,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Swerve drive temp BR",
-              "_title": "Swerve drive temp BR"
-            }
-          },
-          "1,2": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/Drive Bus Volt",
-              "_title": "Drive Bus Volt"
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/Drive isGyroReading",
+              "_title": "isGyroReading",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
             }
           }
         }
@@ -500,33 +247,13 @@
           "3,0": {
             "size": [
               2,
-              4
+              5
             ],
             "content": {
               "_type": "List Layout",
               "_title": "Swerve Modules",
               "Layout/Label position": "LEFT",
               "_children": [
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle FL",
-                  "_title": "Angle FL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle FR",
-                  "_title": "Angle FR"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle BL",
-                  "_title": "Angle BL"
-                },
-                {
-                  "_type": "Text View",
-                  "_source0": "network_table:///SmartDashboard/Swerve angle BR",
-                  "_title": "Angle BR"
-                },
                 {
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Swerve distanceFL",
@@ -546,6 +273,46 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Swerve distanceBR",
                   "_title": "DistanceBR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle FL",
+                  "_title": "CCangle FL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle FL",
+                  "_title": "FXangle FL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle FR",
+                  "_title": "CCangle FR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle FR",
+                  "_title": "FXangle FR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle BL",
+                  "_title": "CCangle BL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle BL",
+                  "_title": "FXangle BL"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve CCangle BR",
+                  "_title": "CCangle BR"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Swerve FXangle BR",
+                  "_title": "FXangle BR"
                 },
                 {
                   "_type": "Text View",
@@ -616,6 +383,11 @@
                   "_type": "Text View",
                   "_source0": "network_table:///SmartDashboard/Drive Odometry Theta",
                   "_title": "Odometry Theta"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/Drive Bus Volt",
+                  "_title": "Bus Volt"
                 }
               ]
             }
@@ -623,7 +395,7 @@
           "7,0": {
             "size": [
               2,
-              2
+              3
             ],
             "content": {
               "_type": "List Layout",
@@ -632,8 +404,13 @@
               "_children": [
                 {
                   "_type": "Command",
-                  "_source0": "network_table:///SmartDashboard/ZeroGyro",
-                  "_title": "ZeroGyro"
+                  "_source0": "network_table:///SmartDashboard/Zero Odometry",
+                  "_title": "Zero Odometry"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Zero Gyro",
+                  "_title": "Zero Gyro"
                 },
                 {
                   "_type": "Command",
@@ -644,6 +421,59 @@
                   "_type": "Command",
                   "_source0": "network_table:///SmartDashboard/Calibrate Turn Motors",
                   "_title": "Calibrate Turn Motors"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Drive Wheels 0 deg",
+                  "_title": "Drive Wheels 0 deg"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Drive Wheels +85 deg",
+                  "_title": "Drive Wheels +85 deg"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Drive Wheels +95 deg",
+                  "_title": "Drive Wheels +95 deg"
+                }
+              ]
+            }
+          },
+          "7,3": {
+            "size": [
+              2,
+              2
+            ],
+            "content": {
+              "_type": "List Layout",
+              "_title": "DriveStraight",
+              "Layout/Label position": "LEFT",
+              "_children": [
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveStraight Manual Angle",
+                  "_title": "Angle (deg)"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveStraight Manual Target Dist",
+                  "_title": "Target Dist (m)"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveStraight Manual MaxVel",
+                  "_title": "MaxVel"
+                },
+                {
+                  "_type": "Text View",
+                  "_source0": "network_table:///SmartDashboard/DriveStraight Manual MaxAccel",
+                  "_title": "MaxAccel"
+                },
+                {
+                  "_type": "Command",
+                  "_source0": "network_table:///SmartDashboard/Drive Straight",
+                  "_title": "Drive Straight"
                 }
               ]
             }
@@ -653,9 +483,9 @@
     }
   ],
   "windowGeometry": {
-    "x": -1.0,
+    "x": 4.0,
     "y": 0.0,
-    "width": 1936.0,
-    "height": 801.0
+    "width": 1746.0,
+    "height": 926.0
   }
 }

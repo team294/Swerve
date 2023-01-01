@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utilities.FileLog;
 
-public class TurnCalibration extends CommandBase {
+public class DriveTurnCalibration extends CommandBase {
 
   private DriveTrain driveTrain;
   private FileLog log;
@@ -20,13 +20,13 @@ public class TurnCalibration extends CommandBase {
   /** Creates a new DriveCalibration. */
   /**
    * 
-   * @param driveTrain 
    * @param maxPercentOutput % output (between 0 and 1)
    * @param rampTime ramp up time in seconds
    * @param rampRate Ramp rate in pctOut/second 
+   * @param driveTrain 
    * @param log
    */
-  public TurnCalibration(DriveTrain driveTrain, double maxPercentOutput, double rampTime, double rampRate, FileLog log) {
+  public DriveTurnCalibration(double maxPercentOutput, double rampTime, double rampRate, DriveTrain driveTrain, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
     this.maxPercentOutput = maxPercentOutput;
@@ -42,6 +42,7 @@ public class TurnCalibration extends CommandBase {
     timer.start();
     driveTrain.setDriveModeCoast(false);
     driveTrain.enableFastLogging(true);
+    log.writeLog(false, "DriveTurnCalibration", "Initialize", "maxPctOut", maxPercentOutput, "rampTime", rampTime, "rampRate", rampRate);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -56,6 +57,8 @@ public class TurnCalibration extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     driveTrain.stopMotors();
+    driveTrain.enableFastLogging(false);
+    log.writeLog(false, "DriveTurnCalibration", "End");
   }
 
   // Returns true when the command should end.

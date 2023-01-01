@@ -9,6 +9,8 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.SwerveConstants;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.utilities.*;
 
@@ -21,19 +23,19 @@ public class DriveWithJoystick extends CommandBase {
   private final Joystick rightJoystick;
   private final FileLog log;
   
-  private double fwdPercent, leftPercent, turnPercent;
+  private double fwdVelocity, leftVelocity, turnRate;
   // private double lastFwdPercent, lastTime, curTime;
 
   // private final double maxFwdRateChange = 2.0;
   // private final double maxRevRateChange = -1.4;
 
   /**
-   * @param driveTrain drive train subsystem to use
    * @param leftJoystick left joystick.  X and Y axis control robot movement, relative to front of robot
    * @param rightJoystick right joystick.  X-axis controls robot rotation.
+   * @param driveTrain drive train subsystem to use
    * @param log filelog to use
    */
-  public DriveWithJoystick(DriveTrain driveTrain, Joystick leftJoystick, Joystick rightJoystick, FileLog log) {
+  public DriveWithJoystick(Joystick leftJoystick, Joystick rightJoystick, DriveTrain driveTrain, FileLog log) {
     this.driveTrain = driveTrain;
     this.log = log;
     this.leftJoystick = leftJoystick;
@@ -54,12 +56,17 @@ public class DriveWithJoystick extends CommandBase {
   @Override
   public void execute() {
     // curTime = System.currentTimeMillis() / 1000.0;
-    fwdPercent = -leftJoystick.getY();
-    leftPercent = -leftJoystick.getX();
-    turnPercent = rightJoystick.getX() * 0.5;
+    fwdVelocity = -leftJoystick.getY();
+    leftVelocity = -leftJoystick.getX();
+    turnRate = -rightJoystick.getX();
+
+    // Apply deadbands
+    fwdVelocity = (Math.abs(fwdVelocity) < OIConstants.joystickDeadband) ? 0 : fwdVelocity * SwerveConstants.kMaxSpeedMetersPerSecond;
+    leftVelocity = (Math.abs(leftVelocity) < OIConstants.joystickDeadband) ? 0 : leftVelocity * SwerveConstants.kMaxSpeedMetersPerSecond;
+    turnRate = (Math.abs(turnRate) < OIConstants.joystickDeadband) ? 0 : turnRate * SwerveConstants.kMaxTurningRadiansPerSecond;
 
     if(log.getLogRotation() == log.DRIVE_CYCLE) {
-      log.writeLog(false, "DriveWithJoystickArcade", "Joystick", "Fwd", fwdPercent, "Left", leftPercent, "Turn", turnPercent);
+      log.writeLog(false, "DriveWithJoystickArcade", "Joystick", "Fwd", fwdVelocity, "Left", leftVelocity, "Turn", turnRate);
     }
 
     // double fwdRateChange = (fwdPercent - lastFwdPercent) / (curTime - lastTime);
@@ -70,7 +77,7 @@ public class DriveWithJoystick extends CommandBase {
 
     // }
     
-    driveTrain.drive(fwdPercent, leftPercent, turnPercent, false);
+    driveTrain.drive(fwdVelocity, leftVelocity, turnRate, true, true);
 
     // lastFwdPercent = fwdPercent;
     // lastTime = curTime;
