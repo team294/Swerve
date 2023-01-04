@@ -162,7 +162,7 @@ public class DriveStraight extends CommandBase {
     desiredStates[1].speedMetersPerSecond = targetVel;
     desiredStates[2].speedMetersPerSecond = targetVel;
     desiredStates[3].speedMetersPerSecond = targetVel;
-    driveTrain.setModuleStates(desiredStates, true);
+    driveTrain.setModuleStates(desiredStates, true);      // TODO Calibrate closed-loop control in SwerveModule.setDesiredState, then change this to closed loop (false)
 
     // Read current module states for logging
     SwerveModuleState[] currentStates = driveTrain.getModuleStates();

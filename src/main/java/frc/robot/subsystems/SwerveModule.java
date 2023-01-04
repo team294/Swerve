@@ -149,6 +149,7 @@ public class SwerveModule {
       getDriveEncoderVelocity(), Rotation2d.fromDegrees(getTurningEncoderDegrees()));
   }
 
+  // TODO Upgrade to 2023 code with SwerveModulePosition (see release notes for 2023 WPILib and section 25.5)
   /**
    * Returns the current position of the module.
    *
@@ -200,6 +201,7 @@ public class SwerveModule {
       driveMotor.set(ControlMode.PercentOutput, driveFeedforward.calculate(desiredState.speedMetersPerSecond));
     }
     else {
+      // TODO Test and calibrate closed loop control
       driveMotor.set(ControlMode.Velocity, calculateDriveEncoderVelocityRaw(desiredState.speedMetersPerSecond), 
         DemandType.ArbitraryFeedForward, driveFeedforward.calculate(desiredState.speedMetersPerSecond));
     }

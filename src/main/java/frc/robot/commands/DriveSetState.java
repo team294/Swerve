@@ -40,6 +40,9 @@ public class DriveSetState extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // TODO Make open/closed loop an optional parameter to the command, instead of always true
+    // Calibrate closed-loop control in SwerveModule.setDesiredState, then decide when calling
+    // this command to use true vs false.  What should the default be for this command? 
     driveTrain.setModuleStates(desiredStates, true);
   }
 

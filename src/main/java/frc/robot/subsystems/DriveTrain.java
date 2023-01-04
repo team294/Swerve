@@ -94,6 +94,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     lfRunningAvg.reset();
 
     // create and initialize odometery
+    // TODO Upgrade to 2023 code with SwerveModulePosition (see release notes for 2023 WPILib and section 25.5)
     odometry = new SwerveDriveOdometry(kDriveKinematics, Rotation2d.fromDegrees(getGyroRotation()), 
         new Pose2d(0, 0, Rotation2d.fromDegrees(0)) );
   }
@@ -226,6 +227,8 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackRight.setDesiredState(desiredStates[3], isOpenLoop);
   }
 
+  // TODO Add version of setModuleStates with acceleration
+
   /**
    * Reads the current swerve ModuleStates.
    * @return The current module states, as measured by the encoders.  
@@ -280,8 +283,9 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackRight.setDesiredState(swerveModuleStates[3], isOpenLoop);
   }
 
-  // TODO Add method to get average speed.  See "linearVel" calculation in the DriveStraight command for an example.  Or, better yet,
-  // use a ChassisSpeeds calculation.
+  // TODO Add version of setModuleStates with acceleration
+
+  // TODO Use the kDriveKinematics object to return the ChassisSpeeds.
 
   // ************ Odometry methods
 
@@ -307,7 +311,9 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     odometry.resetPosition( pose,
         Rotation2d.fromDegrees(getGyroRotation()) );
   }
+  // TODO Upgrade to 2023 code with SwerveModulePosition (see release notes for 2023 WPILib and section 25.5)
 
+  
   // ************ Information methods
 
 
@@ -343,6 +349,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     angularVelocity =  lfRunningAvg.calculate( (currAng - prevAng) / (currTime - prevTime) * 1000 );
 
     // Update robot odometry
+    // TODO Upgrade to 2023 code with SwerveModulePosition (see release notes for 2023 WPILib and section 25.5)
     double degrees = getGyroRotation();
     odometry.update(Rotation2d.fromDegrees(degrees), getModuleStates());
         
@@ -356,8 +363,8 @@ public class DriveTrain extends SubsystemBase implements Loggable {
       // Update data on SmartDashboard
       // TODO Add more logging to Shuffleboard!
       // SmartDashboard.putNumber("Drive Average Dist in Meters", Units.inchesToMeters(getAverageDistance()));
-      // SmartDashboard.putNumber("Drive Fwd Velocity", getLeftEncoderVelocity());
-      // SmartDashboard.putNumber("Drive Sideways Velocity", getRightEncoderVelocity());
+      // SmartDashboard.putNumber("Drive Fwd Velocity", getLeftEncoderVelocity());      // TODO use the ChassisSpeeds to get this
+      // SmartDashboard.putNumber("Drive Sideways Velocity", getRightEncoderVelocity());  // TODO use the ChassisSpeeds to get this
       SmartDashboard.putBoolean("Drive isGyroReading", isGyroReading());
       SmartDashboard.putNumber("Drive Raw Gyro", getGyroRaw());
       SmartDashboard.putNumber("Drive Gyro Rotation", degrees);

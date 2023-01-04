@@ -45,6 +45,7 @@ public final class Constants {
         public static final int usbRightJoystick = 2;
         public static final int usbCoPanel = 3;
 
+        // TODO Fix code or this constant so that the robot does not move when joystick is "neutral"
         public static final double joystickDeadband = 0.02;
     }
 
@@ -65,25 +66,13 @@ public final class Constants {
         public static final double kDriveEncoderMetersPerTick = (kWheelDiameterMeters * Math.PI) / kEncoderCPR / kDriveGearRatio;
         public static final double kTurningEncoderDegreesPerTick = 360.0/kEncoderCPR / kTurningGearRatio;
         
-        //TODO calibrate this block
-        public static final double kMaxSpeedMetersPerSecond = 3.0;
+        // Robot calibration for feed-forward and max speeds
+        public static final double kMaxSpeedMetersPerSecond = 3.0;          // TODO -- Calibrate
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
-        public static final double kMaxTurningRadiansPerSecond = 12.0;
+        public static final double kMaxTurningRadiansPerSecond = 12.0;   // TODO -- Calibrate
         public static final double kVDrive = 0.226; // CALIBRATED = 0.226.  in % output per meters per second
         public static final double kADrive = 0.0;
         public static final double kSDrive = 0.017; // CALIBRATED = 0.017.  in % output
-        // public static final double kPDrive = 0.0; //in % output per meters per second
-        // public static final double kDDrive = 0;
-        // public static final double kIDrive = 0;
-        // public static final double kAngularDrive = 0.00;
-
-        // public static final double kVTurn = 0.00041;
-        // public static final double kATurn = 0.0;
-        // public static final double kSTurn = 0.02;
-        // public static final double kPTurn = 0.0004;
-        // public static final double kDTurn = 0.0;
-        // public static final double kITurn = 0.0;
-        // public static final double kAngularTurn = 0.0;  //last year's constant of differntiable drive, need to calibrate for swerve drive. above this mark
       }
 
       public static final class DriveConstants {

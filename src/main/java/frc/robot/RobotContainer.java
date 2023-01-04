@@ -46,7 +46,6 @@ public class RobotContainer {
     configureButtonBindings(); // configure button bindings
     configureShuffleboard(); // configure shuffleboard
 
-    // TODO Enable default command to drive with joystick
     driveTrain.setDefaultCommand(new DriveWithJoystick(leftJoystick, rightJoystick, driveTrain, log));
   }
 
@@ -156,6 +155,11 @@ public class RobotContainer {
       left[i] = new JoystickButton(leftJoystick, i);
       right[i] = new JoystickButton(rightJoystick, i);
     }
+
+    // TODO Add a button binding to zero the Pose angle (after adding that feature to DriveResetPose).
+    // If the robot angle drifts (or is turned on with the wrong facing), then this button can be used to 
+    // reset the robot facing for field-oriented control.  Turn the robot so that it is facing away
+    // from the driver, then press this button.
 
     // left joystick left button
     //left[1].whenPressed(new IntakeRetractAndFlush(intakeFront, uptake, feeder, log));

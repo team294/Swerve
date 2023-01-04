@@ -40,6 +40,9 @@ public class DriveResetPose extends CommandBase {
     addRequirements(driveTrain);
   }
 
+  // TODO Add 2nd constructor that accepts angle only (not XMeters or YMeters).  Use that to 
+  // reset the angle but keep the current position (use the current measured position as the new position).
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

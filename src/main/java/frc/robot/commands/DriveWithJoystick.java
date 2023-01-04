@@ -77,6 +77,7 @@ public class DriveWithJoystick extends CommandBase {
 
     // }
     
+    // TODO Calibrate closed-loop control in SwerveModule.setDesiredState, then decide if open vs closed loop should be used here
     driveTrain.drive(fwdVelocity, leftVelocity, turnRate, true, true);
 
     // lastFwdPercent = fwdPercent;
