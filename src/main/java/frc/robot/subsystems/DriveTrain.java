@@ -93,9 +93,6 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     currTime = System.currentTimeMillis();
     lfRunningAvg.reset();
 
-    //TODO config swerve modules
-
-
     // create and initialize odometery
     odometry = new SwerveDriveOdometry(kDriveKinematics, Rotation2d.fromDegrees(getGyroRotation()), 
         new Pose2d(0, 0, Rotation2d.fromDegrees(0)) );
@@ -202,17 +199,6 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackRight.setTurnMotorPercentOutput(percentOutput);
   }
 
-  /**
-   * 
-   * @param velocityDPS Speed for turning motors, in degrees/sec
-   */
-  // public void setTurningMotorsVelocity(double velocityDPS){
-  //   swerveFrontLeft.setTurnMotorVelocity(velocityDPS);
-  //   swerveFrontRight.setTurnMotorVelocity(velocityDPS);
-  //   swerveBackLeft.setTurnMotorVelocity(velocityDPS);
-  //   swerveBackRight.setTurnMotorVelocity(velocityDPS);
-  // }
-
 
   /**
    * Stops all of the drive and turning motors
@@ -293,6 +279,9 @@ public class DriveTrain extends SubsystemBase implements Loggable {
     swerveBackLeft.setDesiredState(swerveModuleStates[2], isOpenLoop);
     swerveBackRight.setDesiredState(swerveModuleStates[3], isOpenLoop);
   }
+
+  // TODO Add method to get average speed.  See "linearVel" calculation in the DriveStraight command for an example.  Or, better yet,
+  // use a ChassisSpeeds calculation.
 
   // ************ Odometry methods
 
@@ -401,7 +390,7 @@ public class DriveTrain extends SubsystemBase implements Loggable {
    * @param logWhenDisabled true will log when disabled, false will discard the string
    */
   public void updateDriveLog(boolean logWhenDisabled) {
-    // TODO Add more logging to Shuffleboard!
+    // TODO Add more logging to the log file?
 
     Pose2d pose = odometry.getPoseMeters();
     log.writeLog(logWhenDisabled, "Drive", "Update Variables", 

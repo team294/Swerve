@@ -81,7 +81,7 @@ public class SwerveModule {
     turningMotor.setInverted(true);
     turningMotor.enableVoltageCompensation(true);
 
-    // TODO: Try using the turning encoder for PID 0.
+    // TODO: Try using the turning encoder for PID 0?
     // turningMotor.configRemoteFeedbackFilter(turningEncoder, 0);
     // turningMotor.configSelectedFeedbackSensor(TalonFXFeedbackDevice.RemoteSensor0, 0, 0);
     // turningMotor.configAllowableClosedloopError(0, 0.5);
@@ -184,16 +184,6 @@ public class SwerveModule {
   }
   
   /**
-   * 
-   * @param velocityDPS Speed for turning motor, in degrees/sec
-   */
-  // public void setTurnMotorVelocity(double velocityDPS){
-  //   final double turnFeedforwardPercent = turnFeedforward.calculate(velocityDPS); 
-  //   final double turnOutput = turnSimplePIDController.calculate(getCanCoderVelocityDPS(), velocityDPS);
-  //   turningMotor.set(ControlMode.PercentOutput ,turnFeedforwardPercent + turnOutput);  
-  // }
-  
-  /**
    * Sets the desired state for the module, using closed loop controls on the Talons.
    * The Talons will hold this state until commanded to stop or another state.
    * @param desiredState Desired state with speed and angle
@@ -215,6 +205,7 @@ public class SwerveModule {
     }
 
     // Set turning motor target angle
+    // TODO Determine the right way to implement this code.  Make it selectable by a boolean parameter to setDesiredState?
     // Prevent rotating module if speed is less then 1%. Prevents Jittering.
     // double angle = (Math.abs(desiredState.speedMetersPerSecond) <= (SwerveConstants.kMaxSpeedMetersPerSecond * 0.01)) 
     //   ? getTurningEncoderDegrees() : desiredState.angle.getDegrees(); 
@@ -244,7 +235,6 @@ public class SwerveModule {
    * @return drive wheel distance travelled, in meters (+ = forward)
    */
   public double getDriveEncoderMeters() {
-    //TODO Calibrate the constant for this calculation
     return (getDriveEncoderRaw() - driveEncoderZero) * SwerveConstants.kDriveEncoderMetersPerTick;
   }
 
