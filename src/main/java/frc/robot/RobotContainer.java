@@ -64,7 +64,7 @@ public class RobotContainer {
     // DriveTrain calibration
     // SmartDashboard.putData("Drive Cal Slow", new DriveCalibrate(0.3, 35, 0.01, CalibrateMode.kStraight, driveTrain, log));
 
-    // Testing for autos and trajectories
+    // Testing for drivetrain autos and trajectories
     SmartDashboard.putData("Zero Gyro", new DriveZeroGyro(driveTrain, log));
     SmartDashboard.putData("Zero Odometry", new DriveResetPose(0, 0, 0, driveTrain, log));
     SmartDashboard.putData("Calibrate Drive Motors", new DriveCalibration(0.5, 12, 0.05, driveTrain, log));
@@ -73,6 +73,9 @@ public class RobotContainer {
     SmartDashboard.putData("Drive Wheels +85 deg", new DriveSetState(0, 85, driveTrain, log));
     SmartDashboard.putData("Drive Wheels +95 deg", new DriveSetState(0, 95, driveTrain, log));
     SmartDashboard.putData("Drive Straight", new DriveStraight(false, false, driveTrain, log));
+
+    // Testing for autos and trajectories
+    // TODO Implement a trajectory follower.  See Team364's exampleAuto.java command.
     // SmartDashboard.putData("Drive Trajectory Relative", new DriveFollowTrajectory(CoordType.kRelative, StopType.kBrake, trajectoryCache.cache[TrajectoryType.test.value], false, PIDType.kTalon, driveTrain, log));
     // SmartDashboard.putData("Drive Trajectory Curve Relative", new DriveFollowTrajectory(CoordType.kRelative, StopType.kBrake, trajectoryCache.cache[TrajectoryType.testCurve.value], false, PIDType.kTalon, driveTrain, log));
     // SmartDashboard.putData("Drive Trajectory Absolute", new DriveFollowTrajectory(CoordType.kAbsolute, StopType.kBrake, trajectoryCache.cache[TrajectoryType.test.value], driveTrain, log));  
