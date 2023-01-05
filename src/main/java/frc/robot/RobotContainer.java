@@ -158,7 +158,6 @@ public class RobotContainer {
       left[i] = new JoystickButton(leftJoystick, i);
       right[i] = new JoystickButton(rightJoystick, i);
     }
-
     // TODO Add a button binding to zero the Pose angle (after adding that feature to DriveResetPose).
     // If the robot angle drifts (or is turned on with the wrong facing), then this button can be used to 
     // reset the robot facing for field-oriented control.  Turn the robot so that it is facing away
@@ -166,7 +165,8 @@ public class RobotContainer {
 
     // left joystick left button
     //left[1].whenPressed(new IntakeRetractAndFlush(intakeFront, uptake, feeder, log));
-
+    left[1].whenPressed(new DriveResetPose(0, driveTrain, log));
+    
     // left joystick right button
     //left[2].whenPressed(new IntakeRetractAndFlush(intakeFront, uptake, feeder, log));
 
