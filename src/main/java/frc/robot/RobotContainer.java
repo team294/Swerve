@@ -165,8 +165,9 @@ public class RobotContainer {
 
     // left joystick left button
     //left[1].whenPressed(new IntakeRetractAndFlush(intakeFront, uptake, feeder, log));
+    // Zero the Pose angle
     left[1].whenPressed(new DriveResetPose(0, driveTrain, log));
-    
+
     // left joystick right button
     //left[2].whenPressed(new IntakeRetractAndFlush(intakeFront, uptake, feeder, log));
 

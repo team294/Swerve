@@ -288,7 +288,6 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   // TODO Use the kDriveKinematics object to return the ChassisSpeeds.
 
   // ************ Odometry methods
-  
   /**
    * Returns the currently-estimated position of the robot on the field
    *
