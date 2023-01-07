@@ -67,17 +67,16 @@ public final class Constants {
         public static final double kTurningEncoderDegreesPerTick = 360.0/kEncoderCPR / kTurningGearRatio;
         
         // Robot calibration for feed-forward and max speeds
-        public static final double kMaxSpeedMetersPerSecond = 3.0;          // TODO -- Calibrate
+        // Max speed measured values 1/4/2023:  FL = 4.100, FR  = 4.071, BL = 4.123, BR = 4.084
+        // Max speed is used to keep each motor from maxing out, which preserves ratio between motors 
+        // and ensures that the robot travels in the requested direction.  So, use min value of all 4 motors,
+        // and further derate (initial test by 5%) to account for some battery droop under heavy loads.
+        public static final double kMaxSpeedMetersPerSecond = 3.8;          // CALIBRATED
         public static final double kMaxAccelerationMetersPerSecondSquare = 3.8;
         public static final double kMaxTurningRadiansPerSecond = 12.0;   // TODO -- Calibrate
         public static final double kVDrive = 0.226; // CALIBRATED = 0.226.  in % output per meters per second
         public static final double kADrive = 0.0;                   // TODO -- Calibrate
         public static final double kSDrive = 0.017; // CALIBRATED = 0.017.  in % output
-
-        public static final double maxVelocityFL = 4.100; //1/4/2023 values m/s
-        public static final double maxVelocityFR = 4.071;
-        public static final double maxVelocityBL = 4.123;
-        public static final double maxVelocityBR = 4.084;
       }
 
       public static final class DriveConstants {
