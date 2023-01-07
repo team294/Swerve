@@ -244,7 +244,6 @@ public class SwerveModule {
    * @return drive wheel velocity, in meters per second (+ = forward)
    */
   public double getDriveEncoderVelocity() {
-    //TODO Verify that the output is correct
     return driveMotor.getSelectedSensorVelocity(0) * SwerveConstants.kDriveEncoderMetersPerTick * 10.0;
   }
 
@@ -298,7 +297,6 @@ public class SwerveModule {
    * + = counterclockwise, - = clockwise
    */
   public double getTurningEncoderVelocityDPS() {
-    //TODO Verify that the output is correct
     return turningMotor.getSelectedSensorVelocity(0) * SwerveConstants.kTurningEncoderDegreesPerTick * 10.0;
   }
 
@@ -329,7 +327,6 @@ public class SwerveModule {
    * + = counterclockwise, - = clockwise
    */
   public double getCanCoderVelocityDPS() {
-    //TODO Verify that the output is correct
     return turningCanCoder.getVelocity();
   }
 
