@@ -12,10 +12,13 @@ import frc.robot.utilities.FileLog;
 import frc.robot.utilities.RobotPreferences;
 
 public class StickyFaultsClear extends CommandBase {
+  // TODO (2023) Make this command run when the robot is disabled
+
+  private FileLog log;
+
   /**
    * Creates a new StickyFaultsClear.
    */
-  private FileLog log;
   public StickyFaultsClear(FileLog log) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.log = log;
