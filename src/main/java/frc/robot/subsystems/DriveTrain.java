@@ -179,7 +179,6 @@ public class DriveTrain extends SubsystemBase implements Loggable {
   }
 
   /**
-   * 
    * @param percentOutput Percent output to motor, -1 to +1
    */
   public void setDriveMotorsOutput(double percentOutput){
